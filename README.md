@@ -6,8 +6,8 @@ This Bukkit plugin can be downloaded from its [SpigotMC page](https://www.spigot
 Supported MC versions: 1.13-1.20. Native version: 1.20.
 
 ## Support
-I'd appreciate it if you message me on [Discord](https://discord.gg/EQExhK8Ghm),<br>
-but you can also create an issue on GitHub or a discussion on SpigotMC.
+I'd appreciate it, if you choose to message me on [Discord](https://discord.gg/EQExhK8Ghm).<br>
+However, you can also create an issue on GitHub or a discussion on SpigotMC.
 
 ## Documentation
 ### Links:
