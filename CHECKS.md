@@ -2,14 +2,14 @@
 
 ## Movement checks
 * FlightA (Flight check)
-* FlightB (Fast flight check)
+* FlightB (Faster flight check)
 * FlightC (AirJump hack)
 * SpeedA (Horizontal speed)
 * SpeedB (Horizontal speed)
 * SpeedC (Underwater speed)
 * SpeedD (Vertical speed)
 * SpeedE (Maximum player speed)
-* SpeedF (Flying speed)
+* SpeedF (Legal flight speed)
 * NoFallA (Packet spoof)
 * NoFallB (Packet spoof)
 * JumpA (Jump boost)
@@ -21,7 +21,7 @@
 * VehicleB (Maximum vehicle speed)
 * ElytraA (Irregular acceleration)
 * ElytraB (Floating)
-* ElytraC (Start without a firework)
+* ElytraC (Takeoff without a firework)
 * TridentA (TridentBoost hack)
 * AutoBotA (AutoWalk hack)
 
@@ -55,6 +55,6 @@
 
 ## Packet checks
 * MorePacketsA (Maximum packet rate)
-* MorePacketsB (Timer hack while moving)
-* BadPacketsA (BadPackets check)
-* BadPacketsB (Interaction packets)
+* MorePacketsB (Tuned to detect Timer hack)
+* BadPacketsA (Invalid packets)
+* BadPacketsB (Invalid interaction packets)
