@@ -2,8 +2,8 @@
 
 ## How do I enable alerts?
 Chat notifications are disabled by default. You can enable not only punishment notifications, but also violation notifications in the config.<br>
-`debug.broadcast.violation.enabled: true`<br>
-`debug.broadcast.punishment.enabled: true`
+`alerts.broadcast-violations.enabled: true`<br>
+`alerts.broadcast-punishments.enabled: true`
 
 ## How can I log violations or/and punishments in a Discord channel?
 Check out `discord-webhook` config selection. You don't need to install additional plugins.
@@ -21,4 +21,4 @@ No. AntiCheat development takes a lot of testing. I don't mind the sharing code 
 Yes, you can use the API to make LAC compatible with your own plugins.<br>
 API package: `me.vekster.liteanticheat.api`<br>
 Cancellable events: `LACViolationEvent`, `LACPunishmentEvent`<br>
-You can also get an instance of the `LACApi` class to access more methods.
+You can also get an instance of `LACApi` class to access more methods.
