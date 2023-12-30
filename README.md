@@ -18,6 +18,7 @@ However, you can also create an issue on GitHub or a discussion on SpigotMC.
 * /lac reload - reloads the plugin configuration
 * /lac teleport - teleports to the flag location
 * /lac checks - shows all the enabled and disabled checks
+* /lac alerts - toggles alerts on and off
 * /lac tps - shows the TPS calculated by this plugin
 * /lac client - shows player's client brand
 * /lac ping - shows player's ping and connection stablity
