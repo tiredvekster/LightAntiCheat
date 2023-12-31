@@ -15,7 +15,7 @@ LAC detects mods like InventorySorter, SwingThroughGrass, etc. Every check is cu
 Every check is highly customizable, you can use a text editor (e.g. Notepad++) to replace `java: true` with `java: false` in `checks` selection of config.
 
 ## Is this an open source project?
-No. AntiCheat development takes a lot of testing. I don't mind the sharing code I wrote, but I don't want anyone to copy-paste checks I've been tuning for hours. If you have a certain reputation as a developer, I can provide the source code for non-commercial use.
+No. AntiCheat development takes a lot of testing. I don't mind sharing the code I wrote, but I don't want anyone to copy-paste checks I've been tuning for hours. If you have a certain reputation as a developer, I can provide the source code for non-commercial use.
 
 ## Does this plugin has a developer API?
 Yes, you can use the API to make LAC compatible with your own plugins.<br>
