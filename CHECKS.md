@@ -19,14 +19,14 @@
 * StepA (Step hack)
 * VehicleA (BoatFly hack)
 * VehicleB (Maximum vehicle speed)
-* ElytraA (Irregular acceleration)
-* ElytraB (Floating)
+* ElytraA (Elytra check)
+* ElytraB (Elytra check)
 * ElytraC (Takeoff without a firework)
 * TridentA (TridentBoost hack)
-* AutoBotA (AutoWalk hack)
+* AutoBotA (AutoWalk, AntiAFK hack)
 
 ## Combat checks
-* KillAuraA (A basic hit pattern check)
+* KillAuraA (A basic Aimbot check)
 * KillAuraB (Hitbox)
 * KillAuraC (Attack through blocks)
 * KillAuraD (More than one target)
@@ -34,8 +34,8 @@
 * ReachA (Reach check)
 * ReachB (Accurate reach check)
 * CriticalsA (Criticals check)
-* AutoClickerA (Maximum CPS)
 * AutoClickerA (AutoClicker pattern)
+* AutoClickerA (Maximum CPS)
 * VelocityA (Knockback)
 
 ## Interaction checks
