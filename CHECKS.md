@@ -23,7 +23,6 @@
 * ElytraB (Elytra check)
 * ElytraC (Takeoff without a firework)
 * TridentA (TridentBoost hack)
-* AutoBotA (AutoWalk, AntiAFK hack)
 
 ## Combat checks
 * KillAuraA (A basic Aimbot check)
@@ -49,12 +48,22 @@
 * ScaffoldA (Impossible placement)
 * ScaffoldB (Sprinting)
 
+## Packet checks
+* MorePacketsA (Maximum packet rate)
+* MorePacketsB (Maximum packet rate)
+* MorePacketsC (Tuned to detect Nuker hack)
+* TimerA (Timer hack)
+* TimerB (Faster Timer check)
+* BadPacketsA (Protocol check)
+* BadPacketsB (Protocol check)
+* BadPacketsC (Protocol check)
+* BadPacketsD (Invalid packets)
+* BadPacketsE (Invalid packets)
+
 ## Inventory checks
 * SortingA (InventorySorter mod)
 * ItemSwapA (DoubleHotbar mod)
 
-## Packet checks
-* MorePacketsA (Maximum packet rate)
-* MorePacketsB (Tuned to detect Timer hack)
-* BadPacketsA (Invalid packets)
-* BadPacketsB (Invalid interaction packets)
+## Player checks
+* AutoBotA (AutoWalk, AntiAFK hacks)
+* SkinBlinker (SkinBlinker hack)
