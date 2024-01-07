@@ -53,7 +53,7 @@
 * MorePacketsB (Maximum packet rate)
 * MorePacketsC (Tuned to detect Nuker hack)
 * TimerA (Timer hack)
-* TimerB (Faster Timer check)
+* TimerB (Faster timer check)
 * BadPacketsA (Protocol check)
 * BadPacketsB (Protocol check)
 * BadPacketsC (Protocol check)
