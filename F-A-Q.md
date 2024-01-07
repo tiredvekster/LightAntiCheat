@@ -2,8 +2,14 @@
 
 ## How do I enable alerts?
 Chat notifications are disabled by default. You can enable not only punishment notifications, but also violation notifications in the config.<br>
-`alerts.broadcast-violations.enabled: true`<br>
-`alerts.broadcast-punishments.enabled: true`
+```yml
+alerts:
+  broadcast-violations:
+    enabled: true
+    # ...
+  broadcast-punishments:
+    enabled: true
+```
 
 ## How can I log violations or/and punishments in a Discord channel?
 Check out `discord-webhook` config selection. You don't need to install additional plugins.
