@@ -15,10 +15,12 @@ alerts:
 Check out `discord-webhook` config selection. You don't need to install additional plugins.
 
 ## Why are my players getting false punishments?
-LAC detects mods like InventorySorter, SwingThroughGrass, etc. Every check is customizable and may by disabled. You can read descriptions of all the checks [here](CHECKS.md). If you find any false positive and properly report this to me, I'll immediately fix it.
+1. LAC detects mods like InventorySorter, SwingThroughGrass, etc. Every check is customizable and may be disabled. You can read descriptions of all the checks [here](CHECKS.md).
+2. Some plugins that modify players' movement are not supported.
+3. If you find any false positive and properly report this to me, I'll immediately fix it.
 
 ## Can I use this plugin only to check Bedrock players?
-Every check is highly customizable, you can use a text editor (e.g. Notepad++) to replace `java: true` with `java: false` in `checks` selection of config.
+Every check is highly customizable, you can use a text editor (e.g. Notepad++) to replace `java: true` with `java: false` in `checks` selection of the config.
 
 ## Is this an open source project?
 No. AntiCheat development takes a lot of testing. I don't mind sharing the code I wrote, but I don't want anyone to copy-paste checks I've been tuning for hours. If you have a certain reputation as a developer, I can provide the source code for non-commercial use.
@@ -27,4 +29,4 @@ No. AntiCheat development takes a lot of testing. I don't mind sharing the code 
 Yes, you can use the API to make LAC compatible with your own plugins.<br>
 API package: `me.vekster.liteanticheat.api`<br>
 Cancellable events: `LACViolationEvent`, `LACPunishmentEvent`<br>
-You can also get an instance of `LACApi` class to access more methods.
+You can also get an instance of `LACApi` class to disable a check for a specific player.
