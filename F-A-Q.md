@@ -1,7 +1,7 @@
 # F.A.Q.
 
 ## How do I enable alerts?
-Chat notifications are disabled by default. You can enable not only punishment notifications, but also violation notifications in the config.<br>
+Chat notifications are disabled by default. You can enable not only punishment notifications, but also violation notifications in the config.
 ```yml
 alerts:
   broadcast-violations:
@@ -21,6 +21,14 @@ Check out `discord-webhook` config selection. You don't need to install addition
 
 ## Can I use this plugin only to check Bedrock players?
 Every check is highly customizable, you can use a text editor (e.g. Notepad++) to replace `java: true` with `java: false` in `checks` selection of the config.
+
+## What is the right way to install Geyser?
+* If Geyser is installed on a proxy, you need to set `forward-player-ping` to `true`. Otherwise, it may cause false positives.
+* If you want to make the detection a bit more accurate, you can install Floodgate so that the plugin can differentiate *Pocket Edition players* from *PC/Console Bedrock players*.
+
+## Which plugins are compatible the anticheat?
+If a plugin modifies players' movement, fall damage, block interaction or combat, this can lead to false potisives.<br>
+However, GSit, mcMMO, VeinMiner, AureliumSkills and ExecutableItems are tested for compatibility.
 
 ## Is this an open source project?
 No. AntiCheat development takes a lot of testing. I don't mind sharing the code I wrote, but I don't want anyone to copy-paste checks I've been tuning for hours. If you have a certain reputation as a developer, I can provide the source code for non-commercial use.
