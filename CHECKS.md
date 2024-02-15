@@ -61,7 +61,6 @@
 * BadPacketsB (Protocol check)
 * BadPacketsC (Protocol check)
 * BadPacketsD (Invalid packets)
-* BadPacketsE (Invalid packets)
 
 ## Inventory checks
 * SortingA (InventorySorter mod)
