@@ -26,7 +26,7 @@ Every check is highly customizable, you can use a text editor (e.g. Notepad++) t
 * If Geyser is installed on a proxy, you need to set `forward-player-ping` to `true`. Otherwise, it may cause false positives.
 * If you want to make the detection a bit more accurate, you can install Floodgate so that the plugin can differentiate *Pocket Edition players* from *PC/Console Bedrock players*.
 
-## Which plugins are compatible the anticheat?
+## Which plugins are compatible with the anticheat?
 If a plugin modifies players' movement, fall damage, block interaction or combat, this can lead to false potisives.<br>
 However, GSit, mcMMO, VeinMiner, AureliumSkills and ExecutableItems are tested for compatibility.
 
