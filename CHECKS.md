@@ -33,6 +33,7 @@
 * KillAuraC (Attack through blocks)
 * KillAuraD (More than one target)
 * KillAuraE (Hit while using a shield)
+* KillAuraF (NPC)
 * ReachA (Reach check)
 * ReachB (Accurate reach check)
 * CriticalsA (Criticals check)
