@@ -30,6 +30,10 @@ Every check is highly customizable, you can use a text editor (e.g. Notepad++) t
 If a plugin modifies players' movement, fall damage, block interaction or combat, this can lead to false potisives.<br>
 However, GSit, mcMMO, VeinMiner, AureliumSkills and ExecutableItems are tested for compatibility.
 
+## Is there an AntiXray check?
+No, I recommend using Paper's anti-xray. This looks like the best option right now.<br>
+Here is a setup guide: [https://docs.papermc.io/paper/anti-xray](https://docs.papermc.io/paper/anti-xray)
+
 ## Is this an open source project?
 No. AntiCheat development takes a lot of testing. I don't mind sharing the code I wrote, but I don't want anyone to copy-paste checks I've been tuning for hours. If you have a certain reputation as a developer, I can provide the source code for non-commercial use.
 
