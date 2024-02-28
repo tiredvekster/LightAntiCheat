@@ -35,5 +35,5 @@ However, you can also create an issue on GitHub or a discussion on SpigotMC.
 * liteanticheat.ping - use /lac ping command
 * liteanticheat.client - use /lac client command
 * liteanticheat.cps - use /lac cps command
-* liteanticheat.bypess - bypass the detection
+* liteanticheat.bypass - bypass the detection
 * liteanticheat.* - all the above
