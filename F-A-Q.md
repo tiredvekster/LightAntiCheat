@@ -1,16 +1,5 @@
 # F.A.Q.
 
-## How do I enable alerts?
-Chat notifications are disabled by default. You can enable not only punishment notifications, but also violation notifications in the config.
-```yml
-alerts:
-  broadcast-violations:
-    enabled: true
-    # ...
-  broadcast-punishments:
-    enabled: true
-```
-
 ## How can I log violations or/and punishments in a Discord channel?
 Check out `discord-webhook` config selection. You don't need to install additional plugins.
 
@@ -38,7 +27,7 @@ Here is a setup guide: [https://docs.papermc.io/paper/anti-xray](https://docs.pa
 No. AntiCheat development takes a lot of testing. I don't mind sharing the code I wrote, but I don't want anyone to copy-paste checks I've been tuning for hours. If you have a certain reputation as a developer, I can provide the source code for non-commercial use.
 
 ## Does this plugin has a developer API?
-Yes, you can use the API to make LAC compatible with your own plugins.<br>
-API package: `me.vekster.liteanticheat.api`<br>
+Yes, you can use the API to make Light compatible with your own plugins.<br>
+API package: `me.vekster.lightanticheat.api`<br>
 Cancellable events: `LACViolationEvent`, `LACPunishmentEvent`<br>
 You can also get an instance of `LACApi` class to disable a check for a specific player.
