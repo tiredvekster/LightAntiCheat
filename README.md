@@ -1,19 +1,18 @@
 # LightAntiCheat
-A lightweight and customizable anticheat, designed to detect common hacks.
-
-## Download
-This Bukkit plugin can be downloaded from its [SpigotMC page](https://www.spigotmc.org/resources/lightanticheat.112053/).<br>
-Supported MC versions: 1.8-1.20.5. Native version: 1.20.5.
+A lightweight and customizable anticheat, designed to detect common hacks.<br>
+Supported MC versions: 1.8-1.20.5. Folia, Geyser and [other plugins](F-A-Q.md) are also compatible.
 
 ## Support
 I'd appreciate it, if you choose to message me on [Discord](https://discord.gg/EQExhK8Ghm).<br>
 However, you can also create an issue on GitHub or a discussion on SpigotMC.
 
-## Documentation
-### Links:
+## Links:
+* [SpigotMC page](https://www.spigotmc.org/resources/lightanticheat.112053/)
+* [Discord server](https://discord.gg/EQExhK8Ghm)
 * List of checks: [CHECKS.md](CHECKS.md)
 * Frequently asked questions: [F-A-Q.md](F-A-Q.md)
 
+## Documentation
 ### Commands:
 * /light reload - reloads the plugin configuration
 * /light teleport - teleports to the flag location
@@ -35,5 +34,6 @@ However, you can also create an issue on GitHub or a discussion on SpigotMC.
 * lightanticheat.ping - use /light ping command
 * lightanticheat.client - use /light client command
 * lightanticheat.cps - use /light cps command
-* lightanticheat.bypass - bypass the detection
+* lightanticheat.bypass - bypass the detection<br>
+Specific bypass permissions can be enabled in the config
 * lightanticheat.* - all the above
