@@ -8,6 +8,8 @@ However, you can also create an issue on GitHub or a discussion on SpigotMC.
 
 ## Links:
 * [SpigotMC page](https://www.spigotmc.org/resources/lightanticheat.112053/)
+* [PaperMC page](https://hangar.papermc.io/Vekster/LightAntiCheat)
+* [Modrinth page](https://modrinth.com/plugin/lightanticheat)
 * [Discord server](https://discord.gg/EQExhK8Ghm)
 * List of checks: [CHECKS.md](CHECKS.md)
 * Frequently asked questions: [F-A-Q.md](F-A-Q.md)
