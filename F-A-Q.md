@@ -17,7 +17,7 @@ Every check is highly customizable, you can use a text editor (e.g. Notepad++) t
 
 ## Which plugins are compatible with the anticheat?
 If a plugin modifies players' movement, fall damage, block interaction or combat, this can lead to false potisives.<br>
-However, GSit, mcMMO, VeinMiner, AureliumSkills and ExecutableItems are tested for compatibility.
+However, ViaVersion, Geyser, GSit, mcMMO, VeinMiner, AureliumSkills, ExecutableItems and EnchantsSquared are tested for compatibility.
 
 ## Is there an AntiXray check?
 No, I recommend using Paper's anti-xray. This looks like the best option right now.<br>
