@@ -3,7 +3,7 @@ A lightweight and customizable anticheat, designed to detect common hacks.
 
 ## Download
 This Bukkit plugin can be downloaded from its [SpigotMC page](https://www.spigotmc.org/resources/lightanticheat.112053/).<br>
-Supported MC versions: 1.13-1.20. Native version: 1.20.
+Supported MC versions: 1.8-1.20.5. Native version: 1.20.5.
 
 ## Support
 I'd appreciate it, if you choose to message me on [Discord](https://discord.gg/EQExhK8Ghm).<br>
