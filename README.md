@@ -2,11 +2,7 @@
 A lightweight and customizable anticheat, designed to detect common hacks.<br>
 Supported MC versions: 1.8-1.20.6. Folia, Geyser and [other plugins](F-A-Q.md) are also compatible.
 
-## Support
-I'd appreciate it, if you choose to message me on [Discord](https://discord.gg/EQExhK8Ghm).<br>
-However, you can also create an issue on GitHub or a discussion on SpigotMC.
-
-## Links:
+## Links
 * [SpigotMC page](https://www.spigotmc.org/resources/lightanticheat.112053/)
 * [PaperMC page](https://hangar.papermc.io/Vekster/LightAntiCheat)
 * [Modrinth page](https://modrinth.com/plugin/lightanticheat)
@@ -14,7 +10,25 @@ However, you can also create an issue on GitHub or a discussion on SpigotMC.
 * List of checks: [CHECKS.md](CHECKS.md)
 * Frequently asked questions: [F-A-Q.md](F-A-Q.md)
 
+## Support
+I'd appreciate it, if you choose to message me on [Discord](https://discord.gg/EQExhK8Ghm).<br>
+However, you can also create an issue on GitHub or a discussion on SpigotMC.
+
+## Compatibility
+Any server version between 1.8 and 1.20.6 is compatible.<br>
+Spigot, Paper, Tuinity, Purpur, Pufferfish and Folia are tested for compatibility.<br>
+Other Paper's forks might or might not be compatible. E.g. Catserver, PandaSpigot
+
 ## Documentation
+### Features:
+* Accurate detection with rare false positives
+* Multithreaded, optimized and stable code
+* No additional libraries or plugins are required
+* Most of the checks are compatible with Geyser
+* Light can be installed on a server that runs Folia
+* Supports Discord webhook for notifications
+* Provides convenient utils for moderators
+
 ### Commands:
 * /light reload - reloads the plugin configuration
 * /light teleport - teleports to the flag location
