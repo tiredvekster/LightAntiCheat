@@ -15,7 +15,6 @@ I'd appreciate it, if you choose to message me on [Discord](https://discord.gg/E
 However, you can also create an issue on GitHub or a discussion on SpigotMC.
 
 ## Compatibility
-Any server version between 1.8 and 1.20.6 is compatible.<br>
 Spigot, Paper, Tuinity, Purpur, Pufferfish and Folia are tested for compatibility.<br>
 Other Paper's forks might or might not be compatible. E.g. Catserver, PandaSpigot
 
