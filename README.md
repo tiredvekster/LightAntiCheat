@@ -11,12 +11,11 @@ Supported MC versions: 1.8-1.20.6. Folia, Geyser and [other plugins](F-A-Q.md) a
 * Frequently asked questions: [F-A-Q.md](F-A-Q.md)
 
 ## Support
-I'd appreciate it, if you choose to message me on [Discord](https://discord.gg/EQExhK8Ghm).<br>
-However, you can also create an issue on GitHub or a discussion on SpigotMC.
+The fastest way to get help with Light is through messaging me on [Discord](https://discord.gg/EQExhK8Ghm).
 
 ## Compatibility
-Spigot, Paper, Tuinity, Purpur, Pufferfish and Folia are tested for compatibility.<br>
-Other Paper's forks might or might not be compatible. E.g. Catserver, PandaSpigot
+Some unpopular Spigot's forks might or might not be compatible.<br>
+Spigot, Paper, Tuinity, Purpur, Pufferfish and Folia are tested for compatibility.
 
 ## Documentation
 ### Features:
