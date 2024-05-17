@@ -32,7 +32,7 @@ API package: `me.vekster.lightanticheat.api`<br>
 Cancellable events: `LACViolationEvent`, `LACPunishmentEvent`<br>
 You can also get an instance of `LACApi` class to disable a check for a specific player.
 ```java
-//    Example: Bypassing detection (temporary)
+    //    Example: Bypassing detection (temporary)
     public static void disableDetection(Player player, long durationMils) {
         LACApi lacApi = LACApi.getInstance();
         for (String checkName : lacApi.getCheckNames(CheckType.ALL))
