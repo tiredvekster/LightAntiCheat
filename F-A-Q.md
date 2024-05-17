@@ -31,3 +31,11 @@ Yes, you can use the API to make Light compatible with your own plugins.<br>
 API package: `me.vekster.lightanticheat.api`<br>
 Cancellable events: `LACViolationEvent`, `LACPunishmentEvent`<br>
 You can also get an instance of `LACApi` class to disable a check for a specific player.
+```java
+//    Example: Bypassing detection (temporary)
+    public static void disableDetection(Player player, long durationMils) {
+        LACApi lacApi = LACApi.getInstance();
+        for (String checkName : lacApi.getCheckNames(CheckType.ALL))
+            lacApi.disableDetection(player, checkName, durationMils);
+    }
+```
