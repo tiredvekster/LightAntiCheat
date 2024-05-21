@@ -30,7 +30,7 @@
 * KillAuraA (A basic Aimbot check)
 * KillAuraB (Hitbox)
 * KillAuraC (Attack through blocks)
-* KillAuraE (Shield, MultiAura hack)
+* KillAuraD (Shield, MultiAura hack)
 * ReachA (Reach check)
 * ReachB (Accurate reach check)
 * CriticalsA (Packet hack)
