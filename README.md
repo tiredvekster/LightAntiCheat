@@ -1,6 +1,6 @@
 # LightAntiCheat
 A lightweight and customizable anticheat, designed to detect common hacks.<br>
-Supported MC versions: 1.8-1.20.6. Folia, Geyser and [other plugins](F-A-Q.md) are also compatible.
+Supported MC versions: 1.8-1.21. Folia, Geyser and [other plugins](F-A-Q.md) are also compatible.
 
 ## Links
 * [SpigotMC page](https://www.spigotmc.org/resources/lightanticheat.112053/)
