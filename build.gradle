@@ -1,0 +1,61 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'java'
+}
+
+group = 'me.vekster'
+version = '1.2.2'
+
+repositories {
+    mavenCentral()
+    // Config Updater
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    // FoliaLib
+    maven { url 'https://nexuslite.gcnt.net/repos/other/' }
+}
+
+dependencies {
+    // JetBrains Annotations
+    implementation 'org.jetbrains:annotations:24.0.0'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    // Spigot API
+    compileOnly files('comp/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar')
+    // Netty
+    compileOnly 'io.netty:netty-all:4.1.107.Final'
+    // LightInjector
+    implementation files('impl/LightInjector-1.0.2-forked.jar')
+    // FoliaLib
+    implementation "com.tcoded:FoliaLib:0.3.4"
+    // Floodgate
+    compileOnly files('comp/floodgate-spigot.jar')
+    // Config Updater
+    implementation 'com.tchristofferson:ConfigUpdater:2.1-SNAPSHOT'
+    // MultiVersion
+    implementation fileTree('impl/multiversion')
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching(['plugin.yml', 'config.yml']) {
+        expand props
+    }
+}
+
+shadowJar {
+    exclude('LICENSE')
+    archiveClassifier.set('')
+}

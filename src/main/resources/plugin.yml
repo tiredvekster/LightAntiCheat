@@ -1,0 +1,63 @@
+name: LightAntiCheat
+version: '$version'
+main: me.vekster.lightanticheat.Main
+api-version: '1.13'
+folia-supported: true
+softdepend: [ Geyser-Spigot, floodgate, ViaVersion, GSit, mcMMO, VeinMiner, AureliumSkills, ExecutableItems, EnchantsSquared ]
+description: A lightweight and customizable anticheat, designed to detect common hacks.
+author: Vekster
+website: www.reworlds.net
+commands:
+  lightanticheat:
+    aliases: [ light, lac, anticheat, ac ]
+permissions:
+  lightanticheat.checks:
+    description: Allows /anticheat checks command
+    default: op
+  lightanticheat.reload:
+    description: Allows /anticheat reload command
+    default: op
+  lightanticheat.alerts.notify:
+    description: See debug messages
+    default: op
+  lightanticheat.alerts.toggle:
+    description: Allows /anticheat alerts command
+    default: op
+  lightanticheat.alerts.teleport:
+    description: Allows /anticheat teleport command
+    default: op
+  lightanticheat.alerts:
+    description: All of the alert permissions
+    default: op
+    children:
+      lightanticheat.alerts.notify: true
+      lightanticheat.alerts.toggle: true
+      lightanticheat.alerts.teleport: true
+  lightanticheat.client:
+    description: Allows /anticheat client command
+    default: op
+  lightanticheat.tps:
+    description: Allows /anticheat tps command
+    default: op
+  lightanticheat.ping:
+    description: Allows /anticheat ping command
+    default: op
+  lightanticheat.cps:
+    description: Allows /anticheat cps command
+    default: op
+  lightanticheat.bypass:
+    description: Bypass all the checks
+    default: op
+  lightanticheat.*:
+    description: All of all the above
+    default: op
+    children:
+      lightanticheat.checks: true
+      lightanticheat.reload: true
+      lightanticheat.alerts: true
+      lightanticheat.broadcast: true
+      lightanticheat.client: true
+      lightanticheat.tps: true
+      lightanticheat.ping: true
+      lightanticheat.cps: true
+      lightanticheat.bypass: true
