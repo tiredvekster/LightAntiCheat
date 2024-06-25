@@ -23,9 +23,6 @@ However, ViaVersion, Geyser, GSit, mcMMO, VeinMiner, AureliumSkills, ExecutableI
 No, I recommend using Paper's anti-xray. This looks like the best option right now.<br>
 Here is a setup guide: [https://docs.papermc.io/paper/anti-xray](https://docs.papermc.io/paper/anti-xray)
 
-## Is this an open source project?
-No. AntiCheat development takes a lot of testing. I don't mind sharing the code I wrote, but I don't want anyone to copy-paste checks I've been tuning for hours. If you have a certain reputation as a developer, I can provide the source code for non-commercial use.
-
 ## Does this plugin has a developer API?
 Yes, you can use the API to make Light compatible with your own plugins.<br>
 API package: `me.vekster.lightanticheat.api`<br>
