@@ -9,7 +9,7 @@ Every check is highly customizable, you can use a text editor (e.g. Notepad++) t
 ## Why are my players getting false punishments?
 1. LAC detects mods like InventorySorter, SwingThroughGrass, etc. Every check is customizable and may be disabled. You can read descriptions of all the checks [here](CHECKS.md).
 2. Some plugins that modify players' movement are not supported. Check out [this](https://github.com/tiredvekster/LightAntiCheat/blob/main/F-A-Q.md#which-plugins-are-compatible-with-the-anticheat) for more information.
-3. If you find a false positive and [properly report this to me](), I'll fix it as soon as possible.
+3. If you find a false positive and [properly report this to me](https://github.com/tiredvekster/LightAntiCheat/blob/main/F-A-Q.md#how-to-report-false-positives--console-errors), I'll fix it as soon as possible.
 
 ## Which plugins are compatible with the anticheat?
 If a plugin modifies players' movement, fall damage, block interaction or combat, this can lead to false potisives.<br>
