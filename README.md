@@ -10,13 +10,6 @@ Supported MC versions: 1.8-1.21. Folia, Geyser and [other plugins](F-A-Q.md) are
 * List of checks: [CHECKS.md](CHECKS.md)
 * Frequently asked questions: [F-A-Q.md](F-A-Q.md)
 
-## Support
-The fastest way to get help with Light is through messaging me on [Discord](https://discord.gg/EQExhK8Ghm).
-
-## Compatibility
-Some unpopular Spigot's forks might or might not be compatible.<br>
-Spigot, Paper, Tuinity, Purpur, Pufferfish and Folia are tested for compatibility.
-
 ## Documentation
 ### Features:
 * Accurate detection with rare false positives
