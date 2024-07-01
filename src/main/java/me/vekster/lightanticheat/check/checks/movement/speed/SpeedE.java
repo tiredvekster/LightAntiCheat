@@ -8,6 +8,7 @@ import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
 import me.vekster.lightanticheat.util.cooldown.CooldownUtil;
+import me.vekster.lightanticheat.util.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.hook.FloodgateHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
@@ -108,7 +109,7 @@ public class SpeedE extends MovementCheck implements Listener {
             return;
 
         event.setCancelled(true);
-        player.teleport(event.getFrom());
+        FoliaUtil.teleportPlayer(player, event.getFrom());
 
         Scheduler.runTaskLater(() -> {
             if (System.currentTimeMillis() - buffer.getLong("lastTeleport") < 1000)
@@ -143,7 +144,7 @@ public class SpeedE extends MovementCheck implements Listener {
             return;
 
         event.setCancelled(true);
-        player.teleport(event.getFrom());
+        FoliaUtil.teleportPlayer(player, event.getFrom());
 
         Scheduler.runTaskLater(() -> {
             if (System.currentTimeMillis() - buffer.getLong("lastTeleport") < 1000)

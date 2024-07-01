@@ -3,6 +3,7 @@ package me.vekster.lightanticheat.command;
 import me.vekster.lightanticheat.check.Check;
 import me.vekster.lightanticheat.check.CheckName;
 import me.vekster.lightanticheat.check.CheckSetting;
+import me.vekster.lightanticheat.util.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.player.brand.ClientBrandRecognizer;
 import me.vekster.lightanticheat.util.player.cps.CPSListener;
 import me.vekster.lightanticheat.player.LACPlayer;
@@ -238,9 +239,9 @@ public class LACCommand implements TabExecutor {
                     return true;
                 }
                 if (args.length == 5)
-                    player.teleport(new Location(world, x, y, z));
+                    FoliaUtil.teleportPlayer(player, new Location(world, x, y, z));
                 else
-                    player.teleport(new Location(world, x, y, z, yaw, pitch));
+                    FoliaUtil.teleportPlayer(player, new Location(world, x, y, z, yaw, pitch));
                 return true;
             }
         }
