@@ -56,6 +56,9 @@ processResources {
 }
 
 shadowJar {
-    exclude('LICENSE')
+    exclude('LICENSE', 'META-INF/**')
+    relocate('com', 'org') {
+        exclude('com.kireiko.**')
+    }
     archiveClassifier.set('')
 }
