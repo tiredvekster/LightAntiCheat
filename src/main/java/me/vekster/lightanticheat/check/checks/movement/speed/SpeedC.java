@@ -1,7 +1,7 @@
 package me.vekster.lightanticheat.check.checks.movement.speed;
 
-import kireiko.dev.utils.math.ScalaredMath;
-import kireiko.dev.utils.math.client.MoveEngine;
+import com.kireiko.utils.math.ScalaredMath;
+import com.kireiko.utils.math.client.MoveEngine;
 import me.vekster.lightanticheat.check.CheckName;
 import me.vekster.lightanticheat.check.buffer.Buffer;
 import me.vekster.lightanticheat.check.checks.movement.MovementCheck;
