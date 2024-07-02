@@ -4,6 +4,7 @@ import me.vekster.lightanticheat.player.cache.entity.CachedEntity;
 import me.vekster.lightanticheat.player.cooldown.element.EntityDistance;
 import me.vekster.lightanticheat.util.async.AsyncUtil;
 import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.paper.PaperUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;
@@ -18,7 +19,7 @@ import java.util.concurrent.*;
 public class NearbyEntitiesUtil {
 
     public static Set<Entity> getAllEntitiesAsyncWithoutCache(Player player) {
-        if (VerIdentifier.getVersion().isOlderOrEqualsTo(LACVersion.V1_8) && !FoliaUtil.isFolia()) {
+        if ((VerIdentifier.getVersion().isOlderOrEqualsTo(LACVersion.V1_8) || !PaperUtil.isPaper()) && !FoliaUtil.isFolia()) {
             CompletableFuture<List<Entity>> future = new CompletableFuture<>();
             Scheduler.runTask(true, () -> {
                 try {
@@ -55,7 +56,7 @@ public class NearbyEntitiesUtil {
                         if (entity == null) continue;
                         result.add(entity);
                     }
-                } catch (NoSuchElementException | IllegalStateException ignored) {
+                } catch (NoSuchElementException | IllegalStateException | NullPointerException ignored) {
                 }
             }
         }
