@@ -7,7 +7,7 @@ import me.vekster.lightanticheat.event.packetrecive.LACAsyncPacketReceiveEvent;
 import me.vekster.lightanticheat.event.packetrecive.packettype.PacketType;
 import me.vekster.lightanticheat.event.playermove.LACAsyncPlayerMoveEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
-import me.vekster.lightanticheat.util.hook.FloodgateHook;
+import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

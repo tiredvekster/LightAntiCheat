@@ -8,7 +8,7 @@ import me.vekster.lightanticheat.event.playermove.LACAsyncPlayerMoveEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
-import me.vekster.lightanticheat.util.hook.simplehook.EnchantsSquaredHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
 import org.bukkit.GameMode;

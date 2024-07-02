@@ -9,7 +9,7 @@ import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
 import me.vekster.lightanticheat.util.async.AsyncUtil;
 import me.vekster.lightanticheat.util.cooldown.CooldownUtil;
-import me.vekster.lightanticheat.util.hook.FloodgateHook;
+import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.block.Block;

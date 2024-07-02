@@ -1,4 +1,4 @@
-package me.vekster.lightanticheat.util.hook;
+package me.vekster.lightanticheat.util.hook.plugin;
 
 import me.vekster.lightanticheat.Main;
 import me.vekster.lightanticheat.check.CheckName;

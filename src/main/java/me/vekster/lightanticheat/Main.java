@@ -56,7 +56,7 @@ import me.vekster.lightanticheat.listener.unloadedchunk.UnloadedChunkListener;
 import me.vekster.lightanticheat.player.LACPlayerListener;
 import me.vekster.lightanticheat.util.api.ApiUtil;
 import me.vekster.lightanticheat.util.config.ConfigManager;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.logger.Logger;
 import me.vekster.lightanticheat.util.npc.ExternalNPCUtil;
 import me.vekster.lightanticheat.util.player.connectionstability.ConnectionStabilityListener;

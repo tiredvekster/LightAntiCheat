@@ -10,7 +10,7 @@ import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
 import me.vekster.lightanticheat.player.cache.history.PlayerCacheHistory;
 import me.vekster.lightanticheat.util.cooldown.CooldownUtil;
-import me.vekster.lightanticheat.util.hook.FloodgateHook;
+import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.precise.AccuracyUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;

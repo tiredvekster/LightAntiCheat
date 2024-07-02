@@ -1,6 +1,6 @@
 package me.vekster.lightanticheat.util.player.brand;
 
-import me.vekster.lightanticheat.util.paper.PaperUtil;
+import me.vekster.lightanticheat.util.hook.server.paper.PaperUtil;
 import me.vekster.lightanticheat.util.reflection.ReflectionException;
 import me.vekster.lightanticheat.util.reflection.ReflectionUtil;
 import org.bukkit.entity.Player;

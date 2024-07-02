@@ -1,7 +1,7 @@
 package me.vekster.lightanticheat.util.async;
 
 import me.vekster.lightanticheat.util.annotation.SecureAsync;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;

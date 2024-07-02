@@ -8,7 +8,7 @@ import me.vekster.lightanticheat.event.playermove.LACPlayerMoveEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.util.cooldown.CooldownUtil;
-import me.vekster.lightanticheat.util.hook.simplehook.EnchantsSquaredHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook;
 import me.vekster.lightanticheat.version.VerPlayer;
 import me.vekster.lightanticheat.version.VerUtil;
 import org.bukkit.block.Block;

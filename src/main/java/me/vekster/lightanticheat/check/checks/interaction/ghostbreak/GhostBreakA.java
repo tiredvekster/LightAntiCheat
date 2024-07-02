@@ -5,7 +5,7 @@ import me.vekster.lightanticheat.check.buffer.Buffer;
 import me.vekster.lightanticheat.check.checks.interaction.InteractionCheck;
 import me.vekster.lightanticheat.event.playerbreakblock.LACPlayerBreakBlockEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
-import me.vekster.lightanticheat.util.hook.simplehook.EnchantsSquaredHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

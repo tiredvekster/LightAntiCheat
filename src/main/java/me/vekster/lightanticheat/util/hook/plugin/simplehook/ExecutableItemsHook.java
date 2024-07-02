@@ -1,7 +1,7 @@
-package me.vekster.lightanticheat.util.hook.simplehook;
+package me.vekster.lightanticheat.util.hook.plugin.simplehook;
 
 import me.vekster.lightanticheat.check.CheckName;
-import me.vekster.lightanticheat.util.hook.HookUtil;
+import me.vekster.lightanticheat.util.hook.plugin.HookUtil;
 import me.vekster.lightanticheat.version.VerPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

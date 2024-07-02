@@ -8,7 +8,7 @@ import me.vekster.lightanticheat.event.playerbreakblock.LACPlayerBreakBlockEvent
 import me.vekster.lightanticheat.event.playerplaceblock.LACPlayerPlaceBlockEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;
 import org.bukkit.entity.Player;

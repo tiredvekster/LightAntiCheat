@@ -1,4 +1,4 @@
-package me.vekster.lightanticheat.util.folia;
+package me.vekster.lightanticheat.util.hook.server.folia;
 
 import com.tcoded.folialib.FoliaLib;
 import me.vekster.lightanticheat.Main;

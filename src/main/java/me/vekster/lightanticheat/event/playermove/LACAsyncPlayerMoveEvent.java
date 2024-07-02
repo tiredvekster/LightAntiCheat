@@ -2,7 +2,7 @@ package me.vekster.lightanticheat.event.playermove;
 
 import me.vekster.lightanticheat.event.playermove.blockcache.BlockCache;
 import me.vekster.lightanticheat.player.LACPlayer;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;

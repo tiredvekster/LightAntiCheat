@@ -12,7 +12,7 @@ import me.vekster.lightanticheat.util.config.ConfigManager;
 import me.vekster.lightanticheat.util.config.placeholder.PlaceholderConvertor;
 import me.vekster.lightanticheat.util.detection.CheckUtil;
 import me.vekster.lightanticheat.util.detection.LeanTowards;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.logger.Logger;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import org.bukkit.Bukkit;
@@ -23,7 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.Async;
 
 import java.util.Arrays;
 import java.util.HashSet;

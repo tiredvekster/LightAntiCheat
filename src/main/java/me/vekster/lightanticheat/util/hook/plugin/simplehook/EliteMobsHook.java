@@ -1,6 +1,6 @@
-package me.vekster.lightanticheat.util.hook.simplehook;
+package me.vekster.lightanticheat.util.hook.plugin.simplehook;
 
-import me.vekster.lightanticheat.util.hook.HookUtil;
+import me.vekster.lightanticheat.util.hook.plugin.HookUtil;
 
 public class EliteMobsHook extends HookUtil {
 

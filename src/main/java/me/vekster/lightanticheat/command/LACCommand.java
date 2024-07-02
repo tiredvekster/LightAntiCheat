@@ -3,7 +3,7 @@ package me.vekster.lightanticheat.command;
 import me.vekster.lightanticheat.check.Check;
 import me.vekster.lightanticheat.check.CheckName;
 import me.vekster.lightanticheat.check.CheckSetting;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.player.brand.ClientBrandRecognizer;
 import me.vekster.lightanticheat.util.player.cps.CPSListener;
 import me.vekster.lightanticheat.player.LACPlayer;

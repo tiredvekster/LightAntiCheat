@@ -7,7 +7,7 @@ import me.vekster.lightanticheat.event.packetrecive.LACAsyncPacketReceiveEvent;
 import me.vekster.lightanticheat.event.packetrecive.packettype.PacketType;
 import me.vekster.lightanticheat.event.playermove.LACAsyncPlayerMoveEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
-import me.vekster.lightanticheat.util.hook.FloodgateHook;
+import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;
 import org.bukkit.entity.Player;

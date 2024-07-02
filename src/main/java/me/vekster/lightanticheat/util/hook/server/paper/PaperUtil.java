@@ -1,4 +1,4 @@
-package me.vekster.lightanticheat.util.paper;
+package me.vekster.lightanticheat.util.hook.server.paper;
 
 public class PaperUtil {
 

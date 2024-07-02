@@ -1,6 +1,6 @@
 package me.vekster.lightanticheat.util.scheduler.gamescheduler;
 
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 

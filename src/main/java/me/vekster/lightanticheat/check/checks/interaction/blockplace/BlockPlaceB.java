@@ -7,7 +7,7 @@ import me.vekster.lightanticheat.event.playerplaceblock.LACAsyncPlayerPlaceBlock
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
-import me.vekster.lightanticheat.util.hook.simplehook.EnchantsSquaredHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

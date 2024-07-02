@@ -2,7 +2,7 @@ package me.vekster.lightanticheat.check.buffer;
 
 import me.vekster.lightanticheat.check.Check;
 import me.vekster.lightanticheat.check.CheckName;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;

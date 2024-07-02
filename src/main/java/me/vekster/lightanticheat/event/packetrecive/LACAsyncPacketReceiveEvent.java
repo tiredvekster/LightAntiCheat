@@ -3,7 +3,7 @@ package me.vekster.lightanticheat.event.packetrecive;
 import me.vekster.lightanticheat.event.packetrecive.packettype.PacketType;
 import me.vekster.lightanticheat.event.packetrecive.packettype.PacketTypeRecognizer;
 import me.vekster.lightanticheat.player.LACPlayer;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

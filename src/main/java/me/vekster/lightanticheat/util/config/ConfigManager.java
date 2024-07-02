@@ -6,7 +6,7 @@ import me.vekster.lightanticheat.check.Check;
 import me.vekster.lightanticheat.check.CheckName;
 import me.vekster.lightanticheat.check.CheckSetting;
 import me.vekster.lightanticheat.util.config.placeholder.PlaceholderConvertor;
-import me.vekster.lightanticheat.util.hook.FloodgateHook;
+import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.logger.LogType;
 import me.vekster.lightanticheat.util.logger.Logger;
 import org.bukkit.configuration.ConfigurationSection;

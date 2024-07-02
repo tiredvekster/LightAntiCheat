@@ -3,7 +3,7 @@ package me.vekster.lightanticheat.player;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cooldown.PlayerCooldown;
 import me.vekster.lightanticheat.player.violation.PlayerViolations;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.version.VerPlayer;
 import org.bukkit.entity.Player;
 

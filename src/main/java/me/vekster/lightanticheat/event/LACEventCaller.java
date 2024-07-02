@@ -17,7 +17,7 @@ import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.LACPlayerListener;
 import me.vekster.lightanticheat.util.config.ConfigManager;
 import me.vekster.lightanticheat.util.detection.CheckUtil;
-import me.vekster.lightanticheat.util.folia.FoliaUtil;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;

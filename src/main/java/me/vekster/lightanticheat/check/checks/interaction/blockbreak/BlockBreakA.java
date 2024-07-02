@@ -8,10 +8,10 @@ import me.vekster.lightanticheat.event.playerbreakblock.LACPlayerBreakBlockEvent
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
 import me.vekster.lightanticheat.player.cache.history.PlayerCacheHistory;
-import me.vekster.lightanticheat.util.hook.simplehook.AureliumSkillsHook;
-import me.vekster.lightanticheat.util.hook.simplehook.EnchantsSquaredHook;
-import me.vekster.lightanticheat.util.hook.simplehook.McMMOHook;
-import me.vekster.lightanticheat.util.hook.simplehook.VeinMinerHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.AureliumSkillsHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.McMMOHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.VeinMinerHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;

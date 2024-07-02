@@ -8,7 +8,7 @@ import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
 import me.vekster.lightanticheat.util.async.AsyncUtil;
-import me.vekster.lightanticheat.util.hook.simplehook.EliteMobsHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.EliteMobsHook;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;

@@ -5,7 +5,7 @@ import me.vekster.lightanticheat.check.CheckSetting;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.util.async.AsyncUtil;
 import me.vekster.lightanticheat.util.config.ConfigManager;
-import me.vekster.lightanticheat.util.hook.FloodgateHook;
+import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.logger.text.ColorUtil;
 import me.vekster.lightanticheat.util.player.brand.ClientBrandRecognizer;
 import me.vekster.lightanticheat.util.player.connectionstability.ConnectionStability;
