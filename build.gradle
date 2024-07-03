@@ -18,8 +18,8 @@ dependencies {
     // JetBrains Annotations
     implementation 'org.jetbrains:annotations:24.0.0'
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
     // Spigot API
     compileOnly files('comp/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar')
     // Netty
@@ -57,8 +57,8 @@ processResources {
 
 shadowJar {
     exclude('LICENSE', 'META-INF/**')
-    relocate('com', 'org') {
-        exclude('com.kireiko.**')
-    }
+    relocate('com.fren_gor', 'org.fren_gor')
+    relocate('com.tchristofferson', 'org.tchristofferson')
+    relocate('com.tcoded', 'org.tcoded')
     archiveClassifier.set('')
 }
