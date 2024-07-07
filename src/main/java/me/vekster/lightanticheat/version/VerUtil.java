@@ -426,6 +426,10 @@ public class VerUtil {
         return multiVersion.getEnchantmentLevel(itemStack, enchantment);
     }
 
+    public static Map<String, String> getAttributes(ItemStack itemStack) {
+        return multiVersion.getAttributes(itemStack);
+    }
+
     public static int getPotionLevel(LivingEntity entity, PotionEffectType effectType) {
         return multiVersion.getPotionLevel(entity, effectType);
     }
