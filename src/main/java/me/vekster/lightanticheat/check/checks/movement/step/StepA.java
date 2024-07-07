@@ -1,6 +1,7 @@
 package me.vekster.lightanticheat.check.checks.movement.step;
 
 import me.vekster.lightanticheat.check.CheckName;
+import me.vekster.lightanticheat.check.buffer.Buffer;
 import me.vekster.lightanticheat.check.checks.movement.MovementCheck;
 import me.vekster.lightanticheat.event.playermove.LACAsyncPlayerMoveEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
@@ -77,6 +78,12 @@ public class StepA extends MovementCheck implements Listener {
                 !cache.history.onPacket.onGround.get(HistoryElement.FROM).towardsFalse)
             return;
         if (!isBlockHeight((float) getBlockY(event.getFrom().getY())))
+            return;
+
+        Buffer buffer = getBuffer(player, true);
+        if (isAttribute(player, "GENERIC_STEP_HEIGHT"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 5000)
             return;
 
         Scheduler.runTask(true, () -> {

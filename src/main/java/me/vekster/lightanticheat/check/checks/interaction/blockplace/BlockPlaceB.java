@@ -64,6 +64,11 @@ public class BlockPlaceB extends InteractionCheck implements Listener {
         if (buffer.getInt("flags") <= 2)
             return;
 
+        if (isAttribute(player, "PLAYER_BLOCK_INTERACTION_RANGE"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            return;
+
         Scheduler.runTask(true, () -> {
             if (EnchantsSquaredHook.hasEnchantment(player, "Illuminated", "Harvesting"))
                 return;

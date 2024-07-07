@@ -214,6 +214,12 @@ public class FlightB extends MovementCheck implements Listener {
         if (jumpEffectAmplifier > 2)
             height -= (jumpEffectAmplifier - 2) * 0.2;
         height = height * 0.9 - 0.1 - buffer.getInt("interactiveOffset");
+
+        if (isAttribute(player, "GENERIC_JUMP_STRENGTH"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            height -= 3.0;
+
         double maxHeight = HEIGHT_LIMITS.getOrDefault(jumpEffectAmplifier, Double.MAX_VALUE);
         if (height <= maxHeight)
             return;

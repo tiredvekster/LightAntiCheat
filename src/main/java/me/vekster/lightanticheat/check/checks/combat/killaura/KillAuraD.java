@@ -65,6 +65,11 @@ public class KillAuraD extends CombatCheck implements Listener {
         if (currentTime - buffer.getLong("lastFlag") <= 750) return;
         else buffer.put("lastFlag", currentTime);
 
+        if (isAttribute(player, "PLAYER_SWEEPING_DAMAGE_RATIO"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            return;
+
         Scheduler.runTask(true, () -> {
             callViolationEventIfRepeat(player, lacPlayer, null, buffer, 5000);
         });

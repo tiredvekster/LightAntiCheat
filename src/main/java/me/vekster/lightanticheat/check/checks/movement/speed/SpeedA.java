@@ -154,6 +154,11 @@ public class SpeedA extends MovementCheck implements Listener {
                 break;
             }
 
+        if (isAttribute(player, "GENERIC_MOVEMENT_SPEED", "PLAYER_SNEAKING_SPEED"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            maxSpeed = (maxSpeed + 0.1) * 1.5;
+
         if (hSpeed < maxSpeed)
             return;
 

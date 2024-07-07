@@ -140,6 +140,13 @@ public class FlightA extends MovementCheck implements Listener {
         buffer.put("flightTicks", buffer.getInt("flightTicks") + 1);
         int fallingTicks = buffer.getInt("flightTicks");
 
+        if (isAttribute(player, "GENERIC_JUMP_STRENGTH"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            fallingTicks -= 40;
+        if (fallingTicks < 1)
+            return;
+
         PlayerCacheHistory<Location> eventHistory = cache.history.onEvent.location;
         PlayerCacheHistory<Location> packetHistory = cache.history.onPacket.location;
         double verticalSpeed = Math.min(

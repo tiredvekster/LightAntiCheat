@@ -160,6 +160,11 @@ public class JumpB extends MovementCheck implements Listener {
         else if (jumpEffectAmplifier == 5) maxJumpHeight = 3.360;
         maxJumpHeight = maxJumpHeight * 1.2 + 0.25;
 
+        if (isAttribute(player, "GENERIC_JUMP_STRENGTH"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            maxJumpHeight += 3.0;
+
         double jumpHeight = buffer.getDouble("jumpHeight");
         if (jumpHeight <= maxJumpHeight)
             return;

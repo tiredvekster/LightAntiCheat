@@ -153,6 +153,12 @@ public class SpeedD extends MovementCheck implements Listener {
         }
         maxSpeed *= 1.3;
 
+        if (isAttribute(player, "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
+                "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            maxSpeed = (maxSpeed + 0.1) * 1.5;
+
         if (hSpeed < maxSpeed)
             return;
 

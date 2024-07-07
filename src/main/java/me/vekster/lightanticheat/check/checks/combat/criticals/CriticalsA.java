@@ -80,6 +80,12 @@ public class CriticalsA extends CombatCheck implements Listener {
         if (!isBlockHeight((float) getBlockY(player.getLocation().getY())))
             return;
 
+        Buffer buffer = getBuffer(player, true);
+        if (isAttribute(player, "PLAYER_SWEEPING_DAMAGE_RATIO"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            return;
+
         callViolationEvent(player, lacPlayer, event.getEvent());
     }
 
@@ -157,6 +163,11 @@ public class CriticalsA extends CombatCheck implements Listener {
             return;
 
         Buffer buffer = getBuffer(player, true);
+        if (isAttribute(player, "PLAYER_SWEEPING_DAMAGE_RATIO"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            return;
+
         Scheduler.runTask(true, () -> {
             callViolationEventIfRepeat(player, lacPlayer, null, buffer, Main.getBufferDurationMils() - 1000);
         });

@@ -111,6 +111,11 @@ public class JumpA extends MovementCheck implements Listener {
             return;
         }
 
+        if (isAttribute(player, "GENERIC_JUMP_STRENGTH"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 2000)
+            return;
+
         Scheduler.runTask(true, () -> {
             callViolationEventIfRepeat(player, lacPlayer, event, buffer, Main.getBufferDurationMils() - 1000L);
         });

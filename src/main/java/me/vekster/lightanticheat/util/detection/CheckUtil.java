@@ -26,8 +26,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CheckUtil extends PassableUtil {
 
@@ -123,6 +127,27 @@ public class CheckUtil extends PassableUtil {
         PotionEffect effect = cache.potionEffects.getOrDefault(type, null);
         if (effect == null) return 0;
         return effect.getAmplifier() + 1;
+    }
+
+    @SecureAsync
+    public static boolean isAttribute(Player player, String... names) {
+        Set<ItemStack> itemStacks = new HashSet<>();
+        ItemStack itemInMainHand = VerPlayer.getItemInMainHand(player);
+        if (itemInMainHand != null)
+            itemStacks.add(itemInMainHand);
+        ItemStack itemInOffHand = VerPlayer.getItemInOffHand(player);
+        if (itemInOffHand != null)
+            itemStacks.add(itemInOffHand);
+        for (ItemStack itemStack : player.getInventory().getArmorContents())
+            if (itemStack != null)
+                itemStacks.add(itemStack);
+        for (ItemStack itemStack : itemStacks) {
+            Set<String> attributes = VerUtil.getAttributes(itemStack).keySet();
+            for (String name : names)
+                if (attributes.contains(name))
+                    return true;
+        }
+        return false;
     }
 
     @SecureAsync

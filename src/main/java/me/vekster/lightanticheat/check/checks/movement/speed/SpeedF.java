@@ -81,6 +81,11 @@ public class SpeedF extends MovementCheck implements Listener {
         if (buffer.getInt("speedTicks") <= 15)
             return;
 
+        if (isAttribute(player, "GENERIC_FLYING_SPEED"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 1000)
+            return;
+
         Scheduler.runTask(true, () -> {
             callViolationEventIfRepeat(player, lacPlayer, event, buffer, 3000);
         });

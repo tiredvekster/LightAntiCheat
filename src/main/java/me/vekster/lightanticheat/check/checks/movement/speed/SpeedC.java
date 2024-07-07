@@ -134,6 +134,11 @@ public class SpeedC extends MovementCheck implements Listener {
         if (FloodgateHook.isProbablyPocketEditionPlayer(player, true))
             targetSpeed *= 0.85;
 
+        if (isAttribute(player, "GENERIC_MOVEMENT_SPEED", "PLAYER_SNEAKING_SPEED"))
+            buffer.put("attribute", System.currentTimeMillis());
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            finalSpeedLimit = (finalSpeedLimit + 0.1) * 1.5;
+
         if (targetSpeed < finalSpeedLimit) {
             if (buffer.getInt("localPlayerRaport") <= 0) return;
             buffer.put("localPlayerRaport", buffer.getInt("localPlayerRaport") - 1);
