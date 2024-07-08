@@ -11,6 +11,7 @@ import me.vekster.lightanticheat.player.cache.history.HistoryElement;
 import me.vekster.lightanticheat.player.cache.history.PlayerCacheHistory;
 import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.ValhallaMMOHook;
 import me.vekster.lightanticheat.util.precise.AccuracyUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
@@ -260,6 +261,18 @@ public class FlightA extends MovementCheck implements Listener {
 
             if (AccuracyUtil.isViolationCancel(getCheckSetting(), buffer))
                 return;
+
+            if (ValhallaMMOHook.isPluginInstalled()) {
+                if (System.currentTimeMillis() - buffer.getLong("firstLevelFlagTime") > 8000) {
+                    buffer.put("firstLevelFlagTime", System.currentTimeMillis());
+                    buffer.put("firstLevelFlags", 0);
+                }
+
+                buffer.put("firstLevelFlags", buffer.getInt("firstLevelFlags") + 1);
+                if (buffer.getInt("firstLevelFlags") <= 9)
+                    return;
+            }
+
             if (System.currentTimeMillis() - buffer.getLong("lastGlidingLagPossibleTime") < 5 * 1000)
                 callViolationEventIfRepeat(player, lacPlayer, event, buffer, 500);
             else
