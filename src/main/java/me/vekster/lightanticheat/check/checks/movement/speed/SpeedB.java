@@ -166,11 +166,9 @@ public class SpeedB extends MovementCheck implements Listener {
         maxSpeed *= 1.3;
 
         Map<String, Double> attributes = getPlayerAttributes(player);
-        if (attributes.getOrDefault("GENERIC_MOVEMENT_SPEED", 0.0) < 0.13)
-            attributes.put("GENERIC_MOVEMENT_SPEED", 0.13);
         double attributeAmount = Math.max(
                 getItemStackAttributes(player, "GENERIC_MOVEMENT_SPEED", "PLAYER_SNEAKING_SPEED"),
-                Math.max(attributes.get("GENERIC_MOVEMENT_SPEED"), attributes.get("PLAYER_SNEAKING_SPEED")) - 0.13
+                Math.max(attributes.getOrDefault("GENERIC_MOVEMENT_SPEED", 0.13), attributes.getOrDefault("PLAYER_SNEAKING_SPEED", 0.0)) - 0.13
         );
         if (attributeAmount != 0) {
             maxSpeed = (maxSpeed * 1.05 + 0.11) * (1 + attributeAmount);
