@@ -159,7 +159,7 @@ public class FlightA extends MovementCheck implements Listener {
                 if (attributeAmount <= 0.25 && jumpEffectAmplifier == 0)
                     jumpEffectAmplifier = 6;
                 else
-                    fallingTicks -= 75;
+                    fallingTicks -= 90;
             } else if (attributeAmount <= 1.0) {
                 fallingTicks -= 150;
             } else {
