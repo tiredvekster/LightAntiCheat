@@ -12,6 +12,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -428,6 +429,10 @@ public class VerUtil {
 
     public static Map<String, Double> getAttributes(ItemStack itemStack) {
         return multiVersion.getAttributes(itemStack);
+    }
+
+    public static Map<String, Double> getAttributes(Player player) {
+        return multiVersion.getAttributes(player);
     }
 
     public static int getPotionLevel(LivingEntity entity, PotionEffectType effectType) {

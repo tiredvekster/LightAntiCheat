@@ -34,13 +34,13 @@ public class CriticalsA extends CombatCheck implements Listener {
     public void onHit(LACPlayerAttackEvent event) {
         if (!event.isEntityAttackCause())
             return;
+        if (ValhallaMMOHook.isPluginInstalled())
+            return;
         LACPlayer lacPlayer = event.getLacPlayer();
         PlayerCache cache = lacPlayer.cache;
         Player player = event.getPlayer();
 
         if (!isCheckAllowed(player, lacPlayer))
-            return;
-        if (ValhallaMMOHook.isPluginInstalled())
             return;
 
         if (player.isFlying() || player.isInsideVehicle() || lacPlayer.isGliding() || lacPlayer.isRiptiding() ||
@@ -96,14 +96,14 @@ public class CriticalsA extends CombatCheck implements Listener {
     public void onAsyncHit(LACAsyncPlayerAttackEvent event) {
         if (event.getEntityId() == 0)
             return;
+        if (ValhallaMMOHook.isPluginInstalled())
+            return;
 
         LACPlayer lacPlayer = event.getLacPlayer();
         PlayerCache cache = lacPlayer.cache;
         Player player = event.getPlayer();
 
         if (!isCheckAllowed(player, lacPlayer))
-            return;
-        if (ValhallaMMOHook.isPluginInstalled())
             return;
 
         if (FloodgateHook.isBedrockPlayer(player, true))

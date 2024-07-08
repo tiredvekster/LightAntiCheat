@@ -66,16 +66,12 @@ public class SpeedC extends MovementCheck implements Listener {
 
     @EventHandler
     public void onAsyncMovement(LACAsyncPlayerMoveEvent event) {
+        if (ValhallaMMOHook.isPluginInstalled()) return;
         Player player = event.getPlayer();
         LACPlayer lacPlayer = event.getLacPlayer();
         Buffer buffer = getBuffer(player, true);
 
         if (!isCheckAllowed(player, lacPlayer, true)) {
-            buffer.put("speedTicks", 0);
-            return;
-        }
-
-        if (ValhallaMMOHook.isPluginInstalled()) {
             buffer.put("speedTicks", 0);
             return;
         }
@@ -182,6 +178,7 @@ public class SpeedC extends MovementCheck implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void beforeMovement(LACAsyncPlayerMoveEvent event) {
+        if (ValhallaMMOHook.isPluginInstalled()) return;
         LACPlayer lacPlayer = event.getLacPlayer();
         Player player = event.getPlayer();
 
@@ -223,6 +220,7 @@ public class SpeedC extends MovementCheck implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onTeleport(PlayerTeleportEvent event) {
         if (isExternalNPC(event)) return;
+        if (ValhallaMMOHook.isPluginInstalled()) return;
         Buffer buffer = getBuffer(event.getPlayer(), true);
         buffer.put("flags", 0);
     }
@@ -230,6 +228,7 @@ public class SpeedC extends MovementCheck implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onWorldChange(PlayerChangedWorldEvent event) {
         if (isExternalNPC(event)) return;
+        if (ValhallaMMOHook.isPluginInstalled()) return;
         Buffer buffer = getBuffer(event.getPlayer(), true);
         buffer.put("flags", 0);
     }
@@ -237,6 +236,7 @@ public class SpeedC extends MovementCheck implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onRespawn(PlayerRespawnEvent event) {
         if (isExternalNPC(event)) return;
+        if (ValhallaMMOHook.isPluginInstalled()) return;
         Buffer buffer = getBuffer(event.getPlayer(), true);
         buffer.put("flags", 0);
     }
