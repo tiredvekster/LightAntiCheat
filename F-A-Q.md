@@ -13,7 +13,7 @@ Every check is highly customizable, you can use a text editor (e.g. Notepad++) t
 
 ## Which plugins are compatible with the anticheat?
 If a plugin modifies players' movement, fall damage, block interaction or combat, this can lead to false potisives.<br>
-However, ViaVersion, Geyser, GSit, mcMMO, VeinMiner, AureliumSkills, ExecutableItems and EnchantsSquared are tested for compatibility.
+However, ViaVersion, Geyser, GSit, ValhallaMMO, mcMMO, VeinMiner, AureliumSkills, ExecutableItems and EnchantsSquared are tested for compatibility.
 
 ## How to report false positives / console errors?
 1. You can [create an Issue on GitHub](https://github.com/tiredvekster/LightAntiCheat/issues) or [message me on Discord](https://discord.gg/EQExhK8Ghm).
