@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -136,13 +137,11 @@ public class SpeedC extends MovementCheck implements Listener {
         if (FloodgateHook.isProbablyPocketEditionPlayer(player, true))
             targetSpeed *= 0.85;
 
-        double attributeAmount = getAttribute(player, "GENERIC_MOVEMENT_SPEED", "PLAYER_SNEAKING_SPEED");
-        if (attributeAmount != 0) {
-            finalSpeedLimit = (maxSpeed * 1.25 + 0.2) * (attributeAmount * 15);
-            buffer.put("attribute", System.currentTimeMillis());
-        } else if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000) {
+        Map<String, Double> attributes = getPlayerAttributes(player);
+        if (getItemStackAttributes(player, "GENERIC_MOVEMENT_SPEED", "PLAYER_SNEAKING_SPEED") != 0 ||
+                attributes.getOrDefault("GENERIC_MOVEMENT_SPEED", 0.13) > 0.14 ||
+                attributes.getOrDefault("PLAYER_SNEAKING_SPEED", 0.0) > 0.1)
             return;
-        }
 
         if (targetSpeed < finalSpeedLimit) {
             if (buffer.getInt("localPlayerRaport") <= 0) return;

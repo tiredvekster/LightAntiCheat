@@ -131,7 +131,7 @@ public class CheckUtil extends PassableUtil {
     }
 
     @SecureAsync
-    public static double getAttribute(Player player, String... names) {
+    public static double getItemStackAttributes(Player player, String... names) {
         Set<ItemStack> itemStacks = new HashSet<>();
         ItemStack itemInMainHand = VerPlayer.getItemInMainHand(player);
         if (itemInMainHand != null)
@@ -150,6 +150,11 @@ public class CheckUtil extends PassableUtil {
                     result = Math.max(result, attributes.get(name));
         }
         return result;
+    }
+
+    @SecureAsync
+    public static Map<String, Double> getPlayerAttributes(Player player) {
+        return VerUtil.getAttributes(player);
     }
 
     @SecureAsync

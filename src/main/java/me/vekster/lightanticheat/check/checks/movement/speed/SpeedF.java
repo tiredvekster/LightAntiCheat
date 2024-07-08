@@ -81,7 +81,8 @@ public class SpeedF extends MovementCheck implements Listener {
         if (buffer.getInt("speedTicks") <= 15)
             return;
 
-        if (getAttribute(player, "GENERIC_FLYING_SPEED") != 0)
+        if (getItemStackAttributes(player, "GENERIC_FLYING_SPEED") != 0 ||
+                getPlayerAttributes(player).getOrDefault("GENERIC_FLYING_SPEED", 0.0) > 0.1)
             buffer.put("attribute", System.currentTimeMillis());
         if (System.currentTimeMillis() - buffer.getLong("attribute") < 1000)
             return;

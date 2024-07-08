@@ -102,7 +102,8 @@ public class ReachB extends CombatCheck implements Listener {
         if (buffer.getInt("flags") <= 1)
             return;
 
-        if (getAttribute(player, "PLAYER_ENTITY_INTERACTION_RANGE") != 0)
+        if (getItemStackAttributes(player, "PLAYER_ENTITY_INTERACTION_RANGE") != 0 ||
+                getPlayerAttributes(player).getOrDefault("PLAYER_ENTITY_INTERACTION_RANGE", 0.0) > 0.01)
             buffer.put("attribute", System.currentTimeMillis());
         if (System.currentTimeMillis() - buffer.getLong("attribute") < 2000)
             return;

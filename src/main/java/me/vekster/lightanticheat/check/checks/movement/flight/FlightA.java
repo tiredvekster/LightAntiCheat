@@ -141,18 +141,30 @@ public class FlightA extends MovementCheck implements Listener {
         buffer.put("flightTicks", buffer.getInt("flightTicks") + 1);
         int fallingTicks = buffer.getInt("flightTicks");
 
-        double attributeAmount = getAttribute(player, "GENERIC_JUMP_STRENGTH");
+        int slowFallingEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP);
+        if (getItemStackAttributes(player, "GENERIC_GRAVITY") != 0)
+            slowFallingEffectAmplifier += 1;
+        int jumpEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP);
+
+        double attributeAmount = Math.max(
+                getItemStackAttributes(player, "GENERIC_JUMP_STRENGTH"),
+                getPlayerAttributes(player).getOrDefault("GENERIC_JUMP_STRENGTH", 0.42) - 0.42
+        );
         if (attributeAmount != 0)
             buffer.put("attribute", System.currentTimeMillis());
         else if (System.currentTimeMillis() - buffer.getLong("attribute") < 4000)
             return;
         if (attributeAmount != 0) {
-            if (attributeAmount <= 0.5)
-                fallingTicks -= 75;
-            else if (attributeAmount <= 1.0)
+            if (attributeAmount <= 0.5) {
+                if (attributeAmount <= 0.25 && jumpEffectAmplifier == 0)
+                    jumpEffectAmplifier = 6;
+                else
+                    fallingTicks -= 75;
+            } else if (attributeAmount <= 1.0) {
                 fallingTicks -= 150;
-            else
+            } else {
                 fallingTicks -= 300;
+            }
         }
 
         PlayerCacheHistory<Location> eventHistory = cache.history.onEvent.location;
@@ -170,8 +182,6 @@ public class FlightA extends MovementCheck implements Listener {
 
 
         Map<Integer, Double> map;
-        int jumpEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP);
-        int slowFallingEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP);
         switch (jumpEffectAmplifier) {
             case 0:
                 map = slowFallingEffectAmplifier == 0 ? JUMP_0 : SLOW_FALLING_JUMP_0;

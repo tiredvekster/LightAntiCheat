@@ -150,7 +150,8 @@ public class FlightC extends MovementCheck implements Listener {
                 Scheduler.runTask(true, () -> {
                     if (isEnchantsSquaredImpact(players))
                         return;
-                    if (getAttribute(player, "GENERIC_JUMP_STRENGTH") > 0.15)
+                    if (getItemStackAttributes(player, "GENERIC_JUMP_STRENGTH") > 0.15 ||
+                            getPlayerAttributes(player).getOrDefault("GENERIC_JUMP_STRENGTH", 0.42) > 0.43)
                         return;
                     if (!isBedrockPlayer)
                         callViolationEventIfRepeat(player, lacPlayer, event, buffer, Main.getBufferDurationMils() - 1000L);

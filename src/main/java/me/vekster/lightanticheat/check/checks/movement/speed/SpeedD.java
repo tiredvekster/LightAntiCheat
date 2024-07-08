@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -153,10 +154,24 @@ public class SpeedD extends MovementCheck implements Listener {
         }
         maxSpeed *= 1.3;
 
-        double attributeAmount = getAttribute(player,
-                "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
-                "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"
+        Map<String, Double> attributes = getPlayerAttributes(player);
+        double attributeAmount = Math.max(
+                getItemStackAttributes(player,
+                        "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
+                        "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"
+                ),
+                Math.max(
+                        Math.max(
+                                attributes.getOrDefault("GENERIC_WATER_MOVEMENT_EFFICIENCY", 0.0),
+                                attributes.getOrDefault("PLAYER_SNEAKING_SPEED", 0.0)
+                        ),
+                        Math.max(
+                                attributes.getOrDefault("GENERIC_MOVEMENT_SPEED", 0.13) - 0.13,
+                                attributes.getOrDefault("GENERIC_MOVEMENT_EFFICIENCY", 0.0)
+                        )
+                )
         );
+
         if (attributeAmount != 0) {
             maxSpeed = (maxSpeed * 1.05 + 0.11) * (attributeAmount * 13);
             buffer.put("attribute", System.currentTimeMillis());

@@ -110,7 +110,8 @@ public class NoSlowA extends MovementCheck implements Listener {
         if (horizontalSpeed <= maxHorizontalSpeed && verticalSpeed <= maxVerticalSpeed)
             return;
 
-        if (getAttribute(player, "GENERIC_MOVEMENT_EFFICIENCY") != 0)
+        if (getItemStackAttributes(player, "GENERIC_MOVEMENT_EFFICIENCY") != 0 ||
+                getPlayerAttributes(player).getOrDefault("GENERIC_MOVEMENT_EFFICIENCY", 0.0) > 0.01)
             buffer.put("attribute", System.currentTimeMillis());
         if (System.currentTimeMillis() - buffer.getLong("attribute") < 4000)
             return;

@@ -23,6 +23,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Map;
+
 /**
  * The absolute horizontal, vertical and absolute speed limiter
  */
@@ -198,7 +200,7 @@ public class SpeedE extends MovementCheck implements Listener {
         if (getEffectAmplifier(cache, VerUtil.potions.get("DOLPHINS_GRACE")) > 1)
             maxSpeed *= 2.5;
 
-        double attributeAmount = getAttribute(player,
+        double attributeAmount = getItemStackAttributes(player,
                 "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
                 "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"
         );
@@ -299,9 +301,22 @@ public class SpeedE extends MovementCheck implements Listener {
         maxSpeed *= 2.0;
 
         Buffer buffer = getBuffer(player, true);
-        double attributeAmount = getAttribute(player,
-                "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
-                "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY", "GENERIC_JUMP_STRENGTH"
+        Map<String, Double> attributes = getPlayerAttributes(player);
+        double attributeAmount = Math.max(
+                getItemStackAttributes(player,
+                        "GENERIC_WATER_MOVEMENT_EFFICIENCY", "GENERIC_MOVEMENT_SPEED",
+                        "GENERIC_MOVEMENT_EFFICIENCY", "GENERIC_JUMP_STRENGTH"
+                ),
+                Math.max(
+                        Math.max(
+                                attributes.getOrDefault("GENERIC_WATER_MOVEMENT_EFFICIENCY", 0.0),
+                                attributes.getOrDefault("GENERIC_MOVEMENT_SPEED", 0.13) - 0.13
+                        ),
+                        Math.max(
+                                attributes.getOrDefault("GENERIC_MOVEMENT_EFFICIENCY", 0.0),
+                                attributes.getOrDefault("GENERIC_JUMP_STRENGTH", 0.42) - 0.42
+                        )
+                )
         );
         if (attributeAmount != 0) {
             maxSpeed = (maxSpeed * 1.05 + 0.11) * (attributeAmount * 13);

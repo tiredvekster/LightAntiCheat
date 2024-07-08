@@ -81,7 +81,7 @@ public class StepA extends MovementCheck implements Listener {
             return;
 
         Buffer buffer = getBuffer(player, true);
-        if (getAttribute(player, "GENERIC_STEP_HEIGHT") != 0)
+        if (getItemStackAttributes(player, "GENERIC_STEP_HEIGHT") != 0)
             buffer.put("attribute", System.currentTimeMillis());
         if (System.currentTimeMillis() - buffer.getLong("attribute") < 4000)
             return;
