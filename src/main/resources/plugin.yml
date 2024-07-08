@@ -3,7 +3,7 @@ version: '$version'
 main: me.vekster.lightanticheat.Main
 api-version: '1.13'
 folia-supported: true
-softdepend: [ Geyser-Spigot, floodgate, ViaVersion, GSit, mcMMO, VeinMiner, AureliumSkills, ExecutableItems, EnchantsSquared ]
+softdepend: [ Geyser-Spigot, floodgate, ViaVersion, GSit, mcMMO, ValhallaMMO, VeinMiner, AureliumSkills, ExecutableItems, EnchantsSquared ]
 description: A lightweight and customizable anticheat, designed to detect common hacks.
 author: Vekster
 website: www.reworlds.net
