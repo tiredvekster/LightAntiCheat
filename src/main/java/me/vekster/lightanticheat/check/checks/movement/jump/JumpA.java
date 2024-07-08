@@ -111,7 +111,7 @@ public class JumpA extends MovementCheck implements Listener {
             return;
         }
 
-        if (isAttribute(player, "GENERIC_JUMP_STRENGTH"))
+        if (getAttribute(player, "GENERIC_JUMP_STRENGTH") != 0)
             buffer.put("attribute", System.currentTimeMillis());
         if (System.currentTimeMillis() - buffer.getLong("attribute") < 2000)
             return;

@@ -161,10 +161,10 @@ public class FastBreakA extends InteractionCheck implements Listener {
         if (EnchantsSquaredHook.hasEnchantment(player, "Excavation", "Deforestation", "Harvesting"))
             return;
 
-        if (isAttribute(player, "PLAYER_BLOCK_BREAK_SPEED", "PLAYER_MINING_EFFICIENCY",
-                "PLAYER_SUBMERGED_MINING_SPEED"))
+        if (getAttribute(player, "PLAYER_BLOCK_BREAK_SPEED", "PLAYER_MINING_EFFICIENCY",
+                "PLAYER_SUBMERGED_MINING_SPEED") != 0)
             buffer.put("attribute", System.currentTimeMillis());
-        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3500)
             return;
 
         callViolationEvent(player, lacPlayer, event.getEvent());

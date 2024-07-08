@@ -14,6 +14,7 @@ import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook
 import me.vekster.lightanticheat.util.precise.AccuracyUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -140,12 +141,19 @@ public class FlightA extends MovementCheck implements Listener {
         buffer.put("flightTicks", buffer.getInt("flightTicks") + 1);
         int fallingTicks = buffer.getInt("flightTicks");
 
-        if (isAttribute(player, "GENERIC_JUMP_STRENGTH"))
+        double attributeAmount = getAttribute(player, "GENERIC_JUMP_STRENGTH");
+        if (attributeAmount != 0)
             buffer.put("attribute", System.currentTimeMillis());
-        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
-            fallingTicks -= 40;
-        if (fallingTicks < 1)
+        else if (System.currentTimeMillis() - buffer.getLong("attribute") < 4000)
             return;
+        if (attributeAmount != 0) {
+            if (attributeAmount <= 0.5)
+                fallingTicks -= 25;
+            else if (attributeAmount <= 1.0)
+                fallingTicks -= 50;
+            else
+                fallingTicks -= 100;
+        }
 
         PlayerCacheHistory<Location> eventHistory = cache.history.onEvent.location;
         PlayerCacheHistory<Location> packetHistory = cache.history.onPacket.location;

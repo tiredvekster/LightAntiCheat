@@ -198,6 +198,17 @@ public class SpeedE extends MovementCheck implements Listener {
         if (getEffectAmplifier(cache, VerUtil.potions.get("DOLPHINS_GRACE")) > 1)
             maxSpeed *= 2.5;
 
+        double attributeAmount = getAttribute(player,
+                "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
+                "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"
+        );
+        if (attributeAmount != 0) {
+            maxSpeed = (maxSpeed * 1.05 + 0.11) * (attributeAmount * 13);
+            buffer.put("attribute", System.currentTimeMillis());
+        } else if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000) {
+            return;
+        }
+
         if (hSpeed < maxSpeed)
             return;
 
@@ -287,6 +298,18 @@ public class SpeedE extends MovementCheck implements Listener {
         double maxSpeed = 0.72;
         maxSpeed *= 2.0;
 
+        Buffer buffer = getBuffer(player, true);
+        double attributeAmount = getAttribute(player,
+                "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
+                "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"
+        );
+        if (attributeAmount != 0) {
+            maxSpeed = (maxSpeed * 1.05 + 0.11) * (attributeAmount * 13);
+            buffer.put("attribute", System.currentTimeMillis());
+        } else if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000) {
+            return;
+        }
+
         if (vSpeed < maxSpeed)
             return;
 
@@ -294,7 +317,6 @@ public class SpeedE extends MovementCheck implements Listener {
             if (isPingGlidingPossible(player, cache))
                 return;
 
-            Buffer buffer = getBuffer(player);
             callViolationEventIfRepeat(player, lacPlayer, event, buffer, 1500);
         });
     }

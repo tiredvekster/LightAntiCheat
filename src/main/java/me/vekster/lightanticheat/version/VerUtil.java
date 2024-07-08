@@ -426,7 +426,7 @@ public class VerUtil {
         return multiVersion.getEnchantmentLevel(itemStack, enchantment);
     }
 
-    public static Map<String, String> getAttributes(ItemStack itemStack) {
+    public static Map<String, Double> getAttributes(ItemStack itemStack) {
         return multiVersion.getAttributes(itemStack);
     }
 

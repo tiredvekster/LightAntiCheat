@@ -8,8 +8,6 @@ import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -112,9 +110,9 @@ public class NoSlowA extends MovementCheck implements Listener {
         if (horizontalSpeed <= maxHorizontalSpeed && verticalSpeed <= maxVerticalSpeed)
             return;
 
-        if (isAttribute(player, "GENERIC_MOVEMENT_EFFICIENCY"))
+        if (getAttribute(player, "GENERIC_MOVEMENT_EFFICIENCY") != 0)
             buffer.put("attribute", System.currentTimeMillis());
-        if (System.currentTimeMillis() - buffer.getLong("attribute") < 5000)
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 4000)
             return;
 
         Scheduler.runTask(true, () -> {

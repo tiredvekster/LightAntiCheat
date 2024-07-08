@@ -13,6 +13,7 @@ import me.vekster.lightanticheat.util.detection.CheckUtil;
 import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -215,10 +216,19 @@ public class FlightB extends MovementCheck implements Listener {
             height -= (jumpEffectAmplifier - 2) * 0.2;
         height = height * 0.9 - 0.1 - buffer.getInt("interactiveOffset");
 
-        if (isAttribute(player, "GENERIC_JUMP_STRENGTH"))
+        double attributeAmount = getAttribute(player, "GENERIC_JUMP_STRENGTH");
+        if (attributeAmount != 0)
             buffer.put("attribute", System.currentTimeMillis());
-        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
-            height -= 3.0;
+        else if (System.currentTimeMillis() - buffer.getLong("attribute") < 4000)
+            return;
+        if (attributeAmount != 0) {
+            if (attributeAmount <= 0.5)
+                height -= 2.0;
+            else if (attributeAmount <= 1.0)
+                height -= 4.0;
+            else
+                height -= 8.0;
+        }
 
         double maxHeight = HEIGHT_LIMITS.getOrDefault(jumpEffectAmplifier, Double.MAX_VALUE);
         if (height <= maxHeight)

@@ -31,6 +31,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class CheckUtil extends PassableUtil {
@@ -130,7 +131,7 @@ public class CheckUtil extends PassableUtil {
     }
 
     @SecureAsync
-    public static boolean isAttribute(Player player, String... names) {
+    public static double getAttribute(Player player, String... names) {
         Set<ItemStack> itemStacks = new HashSet<>();
         ItemStack itemInMainHand = VerPlayer.getItemInMainHand(player);
         if (itemInMainHand != null)
@@ -141,13 +142,14 @@ public class CheckUtil extends PassableUtil {
         for (ItemStack itemStack : player.getInventory().getArmorContents())
             if (itemStack != null)
                 itemStacks.add(itemStack);
+        double result = 0;
         for (ItemStack itemStack : itemStacks) {
-            Set<String> attributes = VerUtil.getAttributes(itemStack).keySet();
+            Map<String, Double> attributes = VerUtil.getAttributes(itemStack);
             for (String name : names)
-                if (attributes.contains(name))
-                    return true;
+                if (attributes.containsKey(name))
+                    result = Math.max(result, attributes.get(name));
         }
-        return false;
+        return result;
     }
 
     @SecureAsync

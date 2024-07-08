@@ -173,9 +173,9 @@ public class VelocityA extends CombatCheck implements Listener {
             if (EnchantsSquaredHook.hasEnchantment(player, "Steady", "Burden"))
                 return;
 
-            if (isAttribute(player, "GENERIC_KNOCKBACK_RESISTANCE"))
+            if (getAttribute(player, "GENERIC_KNOCKBACK_RESISTANCE") != 0)
                 buffer.put("attribute", System.currentTimeMillis());
-            if (System.currentTimeMillis() - buffer.getLong("attribute") < 5000)
+            if (System.currentTimeMillis() - buffer.getLong("attribute") < 3500)
                 return;
 
             callViolationEvent(player, lacPlayer, null);

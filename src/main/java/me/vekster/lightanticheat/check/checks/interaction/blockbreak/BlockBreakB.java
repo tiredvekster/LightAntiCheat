@@ -67,9 +67,9 @@ public class BlockBreakB extends InteractionCheck implements Listener {
         if (buffer.getInt("flags") <= 2)
             return;
 
-        if (isAttribute(player, "PLAYER_BLOCK_INTERACTION_RANGE"))
+        if (getAttribute(player, "PLAYER_BLOCK_INTERACTION_RANGE") != 0)
             buffer.put("attribute", System.currentTimeMillis());
-        if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 2500)
             return;
 
         Scheduler.runTask(true, () -> {

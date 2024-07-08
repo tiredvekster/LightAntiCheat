@@ -143,9 +143,9 @@ public class KillAuraB extends CombatCheck implements Listener {
             if (AccuracyUtil.isViolationCancel(getCheckSetting(), buffer))
                 return;
 
-            if (isAttribute(player, "PLAYER_SWEEPING_DAMAGE_RATIO"))
+            if (getAttribute(player, "PLAYER_SWEEPING_DAMAGE_RATIO") != 0)
                 buffer.put("attribute", System.currentTimeMillis());
-            if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000)
+            if (System.currentTimeMillis() - buffer.getLong("attribute") < 3500)
                 return;
 
             callViolationEventIfRepeat(player, lacPlayer, null, buffer, Main.getBufferDurationMils() - 1000L);

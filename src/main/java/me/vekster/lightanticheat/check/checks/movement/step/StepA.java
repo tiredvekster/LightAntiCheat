@@ -81,9 +81,9 @@ public class StepA extends MovementCheck implements Listener {
             return;
 
         Buffer buffer = getBuffer(player, true);
-        if (isAttribute(player, "GENERIC_STEP_HEIGHT"))
+        if (getAttribute(player, "GENERIC_STEP_HEIGHT") != 0)
             buffer.put("attribute", System.currentTimeMillis());
-        if (System.currentTimeMillis() - buffer.getLong("attribute") < 5000)
+        if (System.currentTimeMillis() - buffer.getLong("attribute") < 4000)
             return;
 
         Scheduler.runTask(true, () -> {
