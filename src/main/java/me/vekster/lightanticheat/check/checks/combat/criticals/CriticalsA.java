@@ -10,6 +10,7 @@ import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
 import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.ValhallaMMOHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
 import org.bukkit.GameMode;
@@ -38,6 +39,8 @@ public class CriticalsA extends CombatCheck implements Listener {
         Player player = event.getPlayer();
 
         if (!isCheckAllowed(player, lacPlayer))
+            return;
+        if (ValhallaMMOHook.isPluginInstalled())
             return;
 
         if (player.isFlying() || player.isInsideVehicle() || lacPlayer.isGliding() || lacPlayer.isRiptiding() ||
@@ -99,6 +102,8 @@ public class CriticalsA extends CombatCheck implements Listener {
         Player player = event.getPlayer();
 
         if (!isCheckAllowed(player, lacPlayer))
+            return;
+        if (ValhallaMMOHook.isPluginInstalled())
             return;
 
         if (FloodgateHook.isBedrockPlayer(player, true))

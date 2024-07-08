@@ -301,7 +301,7 @@ public class SpeedE extends MovementCheck implements Listener {
         Buffer buffer = getBuffer(player, true);
         double attributeAmount = getAttribute(player,
                 "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
-                "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"
+                "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY", "GENERIC_JUMP_STRENGTH"
         );
         if (attributeAmount != 0) {
             maxSpeed = (maxSpeed * 1.05 + 0.11) * (attributeAmount * 13);

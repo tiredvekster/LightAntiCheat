@@ -10,6 +10,7 @@ import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
 import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.ValhallaMMOHook;
 import me.vekster.lightanticheat.util.precise.AccuracyUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
@@ -70,6 +71,11 @@ public class SpeedC extends MovementCheck implements Listener {
         Buffer buffer = getBuffer(player, true);
 
         if (!isCheckAllowed(player, lacPlayer, true)) {
+            buffer.put("speedTicks", 0);
+            return;
+        }
+
+        if (ValhallaMMOHook.isPluginInstalled()) {
             buffer.put("speedTicks", 0);
             return;
         }

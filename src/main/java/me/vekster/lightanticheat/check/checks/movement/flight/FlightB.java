@@ -223,11 +223,11 @@ public class FlightB extends MovementCheck implements Listener {
             return;
         if (attributeAmount != 0) {
             if (attributeAmount <= 0.5)
-                height -= 2.0;
+                height -= 20.0;
             else if (attributeAmount <= 1.0)
-                height -= 4.0;
+                height -= 40.0;
             else
-                height -= 8.0;
+                height -= 80.0;
         }
 
         double maxHeight = HEIGHT_LIMITS.getOrDefault(jumpEffectAmplifier, Double.MAX_VALUE);

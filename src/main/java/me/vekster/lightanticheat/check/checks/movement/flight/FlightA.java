@@ -148,11 +148,11 @@ public class FlightA extends MovementCheck implements Listener {
             return;
         if (attributeAmount != 0) {
             if (attributeAmount <= 0.5)
-                fallingTicks -= 25;
+                fallingTicks -= 75;
             else if (attributeAmount <= 1.0)
-                fallingTicks -= 50;
+                fallingTicks -= 150;
             else
-                fallingTicks -= 100;
+                fallingTicks -= 300;
         }
 
         PlayerCacheHistory<Location> eventHistory = cache.history.onEvent.location;

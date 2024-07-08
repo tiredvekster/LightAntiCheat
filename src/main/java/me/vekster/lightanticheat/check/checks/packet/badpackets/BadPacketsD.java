@@ -6,6 +6,7 @@ import me.vekster.lightanticheat.check.checks.packet.PacketCheck;
 import me.vekster.lightanticheat.event.playerattack.LACPlayerAttackEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
+import me.vekster.lightanticheat.util.hook.plugin.simplehook.ValhallaMMOHook;
 import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;
@@ -26,6 +27,7 @@ public class BadPacketsD extends PacketCheck implements Listener {
     public void onHit(LACPlayerAttackEvent event) {
         if (FoliaUtil.isFolia()) return;
         if (VerIdentifier.getVersion().isOlderOrEqualsTo(LACVersion.V1_8)) return;
+        if (ValhallaMMOHook.isPluginInstalled()) return;
 
         Player player = event.getPlayer();
         LACPlayer lacPlayer = event.getLacPlayer();
@@ -53,6 +55,7 @@ public class BadPacketsD extends PacketCheck implements Listener {
     public void afterHit(LACPlayerAttackEvent event) {
         if (FoliaUtil.isFolia()) return;
         if (VerIdentifier.getVersion().isOlderOrEqualsTo(LACVersion.V1_8)) return;
+        if (ValhallaMMOHook.isPluginInstalled()) return;
         Player player = event.getPlayer();
         if (!isCheckAllowed(player, event.getLacPlayer()))
             return;
