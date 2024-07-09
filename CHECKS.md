@@ -2,8 +2,8 @@
 
 ## Movement checks
 * FlightA (Dynamic vertical speed)
-* FlightB (Complex flight check)
-* FlightC (AirJump hack)
+* FlightB (Maximum possible height)
+* FlightC (Complex flight check, AirJump hack)
 * SpeedA (Horizontal speed)
 * SpeedB (Ground speed)
 * SpeedC (Prediction, including Bhop hack)
