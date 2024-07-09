@@ -26,7 +26,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Set;
 
 /**
- * Horizontal speed while flying
+ * Movement trajectory
  */
 public class FlightC extends MovementCheck implements Listener {
 

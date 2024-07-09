@@ -2,7 +2,7 @@ package me.vekster.lightanticheat.check;
 
 public enum CheckName {
     FLIGHT_A(CheckType.MOVEMENT, "Flight_A", "Acceleration"),
-    FLIGHT_B(CheckType.MOVEMENT, "Flight_B", "Flight"),
+    FLIGHT_B(CheckType.MOVEMENT, "Flight_B", "Height"),
     FLIGHT_C(CheckType.MOVEMENT, "Flight_C", "Vector"),
     SPEED_A(CheckType.MOVEMENT, "Speed_A", "Horizontal"),
     SPEED_B(CheckType.MOVEMENT, "Speed_B", "Ground"),
@@ -53,7 +53,7 @@ public enum CheckName {
     BADPACKETS_A(CheckType.PACKET, "BadPackets_A", "Protocol"),
     BADPACKETS_B(CheckType.PACKET, "BadPackets_B", "Impassible"),
     BADPACKETS_C(CheckType.PACKET, "BadPackets_C", "Impassible"),
-    BADPACKETS_D(CheckType.PACKET, "BadPackets_D", "NoSwing"),
+    BADPACKETS_D(CheckType.PACKET, "BadPackets_D", "ArmAnimation"),
     SORTING_A(CheckType.INVENTORY, "Sorting_A", "InstantSorting"),
     ITEMSWAP_A(CheckType.INVENTORY, "ItemSwap_A", "WhileWalking"),
     AUTOBOT_A(CheckType.PLAYER, "AutoBot_A", "AutoBot"),

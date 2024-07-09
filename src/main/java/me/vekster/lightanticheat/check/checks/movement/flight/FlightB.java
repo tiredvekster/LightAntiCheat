@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Lift limiter
+ * Maximum possible height
  */
 public class FlightB extends MovementCheck implements Listener {
 
