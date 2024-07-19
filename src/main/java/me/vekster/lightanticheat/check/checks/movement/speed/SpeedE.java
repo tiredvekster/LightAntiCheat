@@ -12,6 +12,7 @@ import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -200,12 +201,25 @@ public class SpeedE extends MovementCheck implements Listener {
         if (getEffectAmplifier(cache, VerUtil.potions.get("DOLPHINS_GRACE")) > 1)
             maxSpeed *= 2.5;
 
-        double attributeAmount = getItemStackAttributes(player,
-                "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
-                "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"
+        Map<String, Double> attributes = getPlayerAttributes(player);
+        double attributeAmount = Math.max(
+                getItemStackAttributes(player,
+                        "GENERIC_WATER_MOVEMENT_EFFICIENCY", "PLAYER_SNEAKING_SPEED",
+                        "GENERIC_MOVEMENT_SPEED", "GENERIC_MOVEMENT_EFFICIENCY"
+                ),
+                Math.max(
+                        Math.max(
+                                attributes.getOrDefault("GENERIC_WATER_MOVEMENT_EFFICIENCY", 0.0),
+                                attributes.getOrDefault("PLAYER_SNEAKING_SPEED", 0.0)
+                        ),
+                        Math.max(
+                                attributes.getOrDefault("GENERIC_MOVEMENT_SPEED", 0.13) - 0.13,
+                                attributes.getOrDefault("GENERIC_MOVEMENT_EFFICIENCY", 0.0)
+                        )
+                )
         );
         if (attributeAmount != 0) {
-            maxSpeed = (maxSpeed * 1.05 + 0.11) * (attributeAmount * 13);
+            maxSpeed = (maxSpeed * 1.05 + 0.11) * Math.max(1, attributeAmount * 13);
             buffer.put("attribute", System.currentTimeMillis());
         } else if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000) {
             return;
@@ -319,7 +333,7 @@ public class SpeedE extends MovementCheck implements Listener {
                 )
         );
         if (attributeAmount != 0) {
-            maxSpeed = (maxSpeed * 1.05 + 0.11) * (attributeAmount * 13);
+            maxSpeed = (maxSpeed * 1.05 + 0.11) * Math.max(1, attributeAmount * 13);
             buffer.put("attribute", System.currentTimeMillis());
         } else if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000) {
             return;

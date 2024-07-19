@@ -173,7 +173,7 @@ public class SpeedD extends MovementCheck implements Listener {
         );
 
         if (attributeAmount != 0) {
-            maxSpeed = (maxSpeed * 1.05 + 0.11) * (attributeAmount * 13);
+            maxSpeed = (maxSpeed * 1.05 + 0.11) * Math.max(1, attributeAmount * 13);
             buffer.put("attribute", System.currentTimeMillis());
         } else if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000) {
             return;
