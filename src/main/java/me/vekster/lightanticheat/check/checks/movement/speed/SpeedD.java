@@ -7,6 +7,7 @@ import me.vekster.lightanticheat.event.playermove.LACAsyncPlayerMoveEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
+import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
 import org.bukkit.Material;
@@ -178,6 +179,9 @@ public class SpeedD extends MovementCheck implements Listener {
         } else if (System.currentTimeMillis() - buffer.getLong("attribute") < 3000) {
             return;
         }
+
+        if (FloodgateHook.isBedrockPlayer(player, true))
+            maxSpeed = maxSpeed * 1.1 + 0.05;
 
         if (hSpeed < maxSpeed)
             return;

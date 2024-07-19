@@ -9,6 +9,7 @@ import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.util.async.AsyncUtil;
 import me.vekster.lightanticheat.util.detection.LeanTowards;
+import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.version.VerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -161,7 +162,11 @@ public class BoatA extends MovementCheck implements Listener {
             return;
 
         double verticalSpeed = distanceVertical(event.getFrom(), event.getTo());
-        double calculatedVerticalSpeed = SPEEDS.getOrDefault(buffer.getInt("boatFlightEvents"), Collections.min(SPEEDS.values()));
+
+        int boatFlightEvents = buffer.getInt("boatFlightEvents");
+        if (FloodgateHook.isBedrockPlayer(player)) boatFlightEvents -= 2;
+        if (boatFlightEvents < 4) return;
+        double calculatedVerticalSpeed = SPEEDS.getOrDefault(boatFlightEvents, Collections.min(SPEEDS.values()));
 
         if (verticalSpeed > calculatedVerticalSpeed * (calculatedVerticalSpeed > 0 ? 1.4 : 0.7) + 0.1)
             buffer.put("flags", Math.min(buffer.getInt("flags") + 1, 4));
