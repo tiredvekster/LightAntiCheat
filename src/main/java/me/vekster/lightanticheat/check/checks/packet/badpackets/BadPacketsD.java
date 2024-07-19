@@ -1,22 +1,18 @@
 package me.vekster.lightanticheat.check.checks.packet.badpackets;
 
 import me.vekster.lightanticheat.check.CheckName;
-import me.vekster.lightanticheat.check.buffer.Buffer;
 import me.vekster.lightanticheat.check.checks.packet.PacketCheck;
-import me.vekster.lightanticheat.event.playerattack.LACPlayerAttackEvent;
+import me.vekster.lightanticheat.event.packetrecive.LACAsyncPacketReceiveEvent;
+import me.vekster.lightanticheat.event.packetrecive.packettype.PacketType;
 import me.vekster.lightanticheat.player.LACPlayer;
-import me.vekster.lightanticheat.player.cache.PlayerCache;
-import me.vekster.lightanticheat.util.hook.plugin.simplehook.ValhallaMMOHook;
-import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
-import me.vekster.lightanticheat.version.identifier.LACVersion;
-import me.vekster.lightanticheat.version.identifier.VerIdentifier;
+import me.vekster.lightanticheat.util.scheduler.Scheduler;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 /**
- * No swing(arm) animation
+ * Impassible SetCreativeSlot packet
  */
 public class BadPacketsD extends PacketCheck implements Listener {
     public BadPacketsD() {
@@ -24,42 +20,29 @@ public class BadPacketsD extends PacketCheck implements Listener {
     }
 
     @EventHandler
-    public void onHit(LACPlayerAttackEvent event) {
-        if (FoliaUtil.isFolia()) return;
-        if (VerIdentifier.getVersion().isOlderOrEqualsTo(LACVersion.V1_8)) return;
-        if (ValhallaMMOHook.isPluginInstalled()) return;
+    public void onAsyncPacketReceive(LACAsyncPacketReceiveEvent event) {
+        if (event.getPacketType() != PacketType.SET_CREATIVE_SLOT)
+            return;
 
         Player player = event.getPlayer();
         LACPlayer lacPlayer = event.getLacPlayer();
-        PlayerCache cache = lacPlayer.cache;
-
-        if (!isCheckAllowed(player, lacPlayer))
+        if (!isCheckAllowed(player, lacPlayer, true))
             return;
 
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lacPlayer.joinTime < 8 * 1000)
+        if (player.getGameMode() == GameMode.CREATIVE ||
+                System.currentTimeMillis() - lacPlayer.cache.lastGamemodeChange < 500)
             return;
 
-        Buffer buffer = getBuffer(player);
-        if (currentTime - cache.lastSwingTime <= currentTime - buffer.getLong("lastHit") + 3500)
-            return;
+        Scheduler.runTaskLater(() -> {
+            if (!player.isOnline() || lacPlayer.leaveTime != 0)
+                return;
 
-        if (currentTime - buffer.getLong("lastFlag") < 500)
-            return;
-        buffer.put("lastFlag", currentTime);
+            if (player.getGameMode() == GameMode.CREATIVE ||
+                    System.currentTimeMillis() - lacPlayer.cache.lastGamemodeChange < 500)
+                return;
 
-        callViolationEventIfRepeat(player, lacPlayer, event.getEvent(), buffer, 3000);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void afterHit(LACPlayerAttackEvent event) {
-        if (FoliaUtil.isFolia()) return;
-        if (VerIdentifier.getVersion().isOlderOrEqualsTo(LACVersion.V1_8)) return;
-        if (ValhallaMMOHook.isPluginInstalled()) return;
-        Player player = event.getPlayer();
-        if (!isCheckAllowed(player, event.getLacPlayer()))
-            return;
-        getBuffer(player).put("lastHit", System.currentTimeMillis());
+            flag(player, lacPlayer);
+        }, 1);
     }
 
 }

@@ -27,7 +27,7 @@ public class BadPacketsA extends PacketCheck implements Listener {
         if (!isCheckAllowed(player, lacPlayer, true))
             return;
 
-        if (event.getEntityId() < 0 || event.getEntityId() == player.getEntityId())
+        if (event.getEntityId() == player.getEntityId())
             flag(player, lacPlayer);
     }
 
