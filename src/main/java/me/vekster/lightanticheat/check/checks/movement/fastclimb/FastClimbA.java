@@ -7,6 +7,7 @@ import me.vekster.lightanticheat.event.playermove.LACAsyncPlayerMoveEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.player.cache.history.HistoryElement;
+import me.vekster.lightanticheat.util.async.AsyncUtil;
 import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
@@ -14,6 +15,7 @@ import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -70,6 +72,14 @@ public class FastClimbA extends MovementCheck implements Listener {
             buffer.put("climbingEvents", 0);
             return;
         }
+
+        if (cache.sneakingTicks > -15)
+            return;
+        Block block = AsyncUtil.getBlock(player.getLocation());
+        if (block == null) return;
+        Block downBlock = AsyncUtil.getBlock(player.getLocation().subtract(0, 1, 0));
+        if (downBlock == null) return;
+        if (block.getType() != downBlock.getType()) return;
 
         Set<Material> withinMaterials = new HashSet<>();
         withinMaterials.addAll(event.getToWithinMaterials());
