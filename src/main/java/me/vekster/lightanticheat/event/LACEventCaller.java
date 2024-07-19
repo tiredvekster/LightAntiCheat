@@ -125,7 +125,13 @@ public class LACEventCaller extends LightInjector implements Listener {
         if (event.getPacketType() == PacketType.USE_ENTITY && VerIdentifier.getVersion().isNewerThan(LACVersion.V1_8)) {
             PLUGIN_MANAGER.callEvent(new LACAsyncPlayerAttackEvent(event.getPlayer(), event.getLacPlayer(), event.getEntityId()));
         }
-        PLUGIN_MANAGER.callEvent(event);
+        if (event.getPacketType() == PacketType.FLYING) {
+            Scheduler.runTaskAsynchronously(true, () -> {
+                PLUGIN_MANAGER.callEvent(event);
+            });
+        } else {
+            PLUGIN_MANAGER.callEvent(event);
+        }
         return nmsPacket;
     }
 
