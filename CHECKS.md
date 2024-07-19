@@ -57,9 +57,9 @@
 * TimerA (Movement Timer hack)
 * TimerB (Global Timer hack)
 * BadPacketsA (Protocol check)
-* BadPacketsB (Invalid packets)
+* BadPacketsB (Protocol check)
 * BadPacketsC (Invalid packets)
-* BadPacketsD (No arm animation)
+* BadPacketsD (Invalid packets)
 
 ## Inventory checks
 * SortingA (Too fast, InventorySorter mod)
