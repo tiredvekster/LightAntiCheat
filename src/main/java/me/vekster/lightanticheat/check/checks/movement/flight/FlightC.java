@@ -14,6 +14,8 @@ import me.vekster.lightanticheat.util.hook.plugin.FloodgateHook;
 import me.vekster.lightanticheat.util.precise.AccuracyUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerUtil;
+import me.vekster.lightanticheat.version.identifier.LACVersion;
+import me.vekster.lightanticheat.version.identifier.VerIdentifier;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -144,7 +146,8 @@ public class FlightC extends MovementCheck implements Listener {
                 buffer.put("airJump", buffer.getInt("airJump") + 1);
             }
         } else if (buffer.getInt("airJump") == 2) {
-            if (distanceVertical(event.getFrom(), event.getTo()) > 0.125) {
+            if (distanceVertical(event.getFrom(), event.getTo()) > 0.125 &&
+                    VerIdentifier.getVersion().isNewerThan(LACVersion.V1_8)) {
                 buffer.put("airJump", 1);
                 Set<Player> players = getPlayersForEnchantsSquared(lacPlayer, player);
                 Scheduler.runTask(true, () -> {
@@ -205,7 +208,8 @@ public class FlightC extends MovementCheck implements Listener {
     private static boolean isSpeedDecreasing(PlayerCacheHistory<Location> history) {
         Location previousLocation = null;
         Location prePreviousLocation = null;
-        for (int i = 0; i <= 7 && i < HistoryElement.values().length; i++) {
+        boolean legacy = VerIdentifier.getVersion() == LACVersion.V1_8;
+        for (int i = 0; i <= (!legacy ? 7 : 10) && i < HistoryElement.values().length; i++) {
             HistoryElement element = HistoryElement.values()[i];
             Location location = history.get(element);
             if (previousLocation == null) {
@@ -218,7 +222,7 @@ public class FlightC extends MovementCheck implements Listener {
                 continue;
             }
 
-            if (distanceVertical(previousLocation, location) + 0.0000005 < distanceVertical(prePreviousLocation, previousLocation))
+            if (distanceVertical(previousLocation, location) + (!legacy ? 0.0000005 : 0) <= distanceVertical(prePreviousLocation, previousLocation))
                 return true;
 
             prePreviousLocation = previousLocation;
