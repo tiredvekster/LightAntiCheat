@@ -20,7 +20,7 @@ To get started PRing changes you will need to have the following installed/condi
 2. Create a new branch with a descriptive name
 3. Make your changes
 4. Test your changes on every version of Minecraft that we support (Or cover most of them such as 1.8, 1.9, 1.12, 1.21)
-5. Push your changes to your fork
+5. Push your changes to your fork, include **[ci-skip]** if your commit only contains documentation but not actual code
 6. Create a pull request
 7. Relax 😎
 
