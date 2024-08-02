@@ -27,7 +27,7 @@ dependencies {
     // LightInjector
     implementation files('impl/LightInjector-1.0.2-forked.jar')
     // FoliaLib
-    implementation "com.tcoded:FoliaLib:0.3.4"
+    implementation "com.tcoded:FoliaLib:0.4.2"
     // Floodgate
     compileOnly files('comp/floodgate-spigot.jar')
     // Config Updater
