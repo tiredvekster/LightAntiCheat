@@ -61,5 +61,5 @@ shadowJar {
     relocate('com.tchristofferson', 'org.tchristofferson')
     relocate('com.tcoded', 'org.tcoded')
     archiveClassifier.set('')
-    destinationDirectory.set(file(('C:\\Users\\t1332\\OneDrive\\Рабочий стол\\server\\plugins')))
+    destinationDirectory.set(file(destinationPath))
 }

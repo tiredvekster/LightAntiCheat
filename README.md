@@ -10,6 +10,9 @@ Supported MC versions: 1.8-1.21. Folia, Geyser and [other plugins](F-A-Q.md) are
 * List of checks: [CHECKS.md](CHECKS.md)
 * Frequently asked questions: [F-A-Q.md](F-A-Q.md)
 
+## You want to contribute?
+Check out the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
+
 ## Documentation
 ### Features:
 * Accurate detection with rare false positives

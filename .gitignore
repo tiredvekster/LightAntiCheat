@@ -1,6 +1,7 @@
 # Gradle
 bin/
 build/
+run/
 .gradle
 .gradletasknamecache
 gradle-app.setting
@@ -27,3 +28,6 @@ tmp/
 local.properties
 .loadpath
 .factorypath
+
+# destinationPath config
+gradle.properties
