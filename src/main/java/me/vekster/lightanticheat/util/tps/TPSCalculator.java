@@ -4,9 +4,8 @@ import me.vekster.lightanticheat.util.annotation.SecureAsync;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TPSCalculator {
 
@@ -21,7 +20,7 @@ public class TPSCalculator {
     static {
         Double[] tps = new Double[CACHE_DURATION_IN_SEC / CHECK_INTERVAL_IN_SEC];
         Arrays.fill(tps, 20.0);
-        TPS = Collections.synchronizedList(new LinkedList<>(Arrays.asList(tps)));
+        TPS = new CopyOnWriteArrayList<>(Arrays.asList(tps));
     }
 
     public static void loadTPSCalculator() {
