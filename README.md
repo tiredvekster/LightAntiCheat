@@ -47,3 +47,7 @@ Check out the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
 * lightanticheat.bypass - bypass the detection<br>
 Specific bypass permissions can be enabled in the config
 * lightanticheat.* - all the above
+
+# Maven/Gradle
+
+*Coming soon*
