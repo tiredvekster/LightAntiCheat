@@ -1,6 +1,7 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'java-library'
+    id 'java'
+    id 'maven-publish'
 }
 
 group = 'me.vekster'
@@ -41,6 +42,26 @@ dependencies {
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/tiredvekster/LightAntiCheat"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+
+
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
     }
 }
 
