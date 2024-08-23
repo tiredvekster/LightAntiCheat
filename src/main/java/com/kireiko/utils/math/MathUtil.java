@@ -269,10 +269,10 @@ public class MathUtil {
     }
 
     /**
-     * @param - The collection of numbers you want analyze
+     * @param collection - The collection of numbers you want analyze
      * @return - A pair of the high and low outliers
      *
-     * @See - https://en.wikipedia.org/wiki/Outlier
+     * @see <a href="https://en.wikipedia.org/wiki/Outlier">https://en.wikipedia.org/wiki/Outlier</a>
      */
     public Pair<List<Double>, List<Double>> getOutliers(final Collection<? extends Number> collection) {
         final List<Double> values = new ArrayList<>();

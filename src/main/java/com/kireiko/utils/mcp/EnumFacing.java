@@ -85,7 +85,7 @@ public enum EnumFacing {
     }
 
     /**
-     * Get the opposite Facing (e.g. DOWN => UP)
+     * Get the opposite Facing (e.g. DOWN =&gt; UP)
      */
     public EnumFacing getOpposite() {
         return VALUES[this.opposite];
@@ -124,7 +124,7 @@ public enum EnumFacing {
     }
 
     /**
-     * Rotate this Facing around the Y axis clockwise (NORTH => EAST => SOUTH => WEST => NORTH)
+     * Rotate this Facing around the Y axis clockwise (NORTH =&gt; EAST =&gt; SOUTH =&gt; WEST =&gt; NORTH)
      */
     public EnumFacing rotateY() {
         switch (SwitchPlane.FACING_LOOKUP[this.ordinal()]) {
@@ -146,7 +146,7 @@ public enum EnumFacing {
     }
 
     /**
-     * Rotate this Facing around the X axis (NORTH => DOWN => SOUTH => UP => NORTH)
+     * Rotate this Facing around the X axis (NORTH =&gt; DOWN =&gt; SOUTH =&gt; UP =&gt; NORTH)
      */
     private EnumFacing rotateX() {
         switch (SwitchPlane.FACING_LOOKUP[this.ordinal()]) {
@@ -170,7 +170,7 @@ public enum EnumFacing {
     }
 
     /**
-     * Rotate this Facing around the Z axis (EAST => DOWN => WEST => UP => EAST)
+     * Rotate this Facing around the Z axis (EAST =&gt; DOWN =&gt; WEST =&gt; UP =&gt; EAST)
      */
     private EnumFacing rotateZ() {
         switch (SwitchPlane.FACING_LOOKUP[this.ordinal()]) {
@@ -193,7 +193,7 @@ public enum EnumFacing {
     }
 
     /**
-     * Rotate this Facing around the Y axis counter-clockwise (NORTH => WEST => SOUTH => EAST => NORTH)
+     * Rotate this Facing around the Y axis counter-clockwise (NORTH =&gt; WEST =&gt; SOUTH =&gt; EAST =&gt; NORTH)
      */
     public EnumFacing rotateYCCW() {
         switch (SwitchPlane.FACING_LOOKUP[this.ordinal()]) {
