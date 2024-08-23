@@ -49,7 +49,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/tiredvekster/lightanticheat"
+            url = "https://maven.pkg.github.com/tiredvekster/LightAntiCheat"
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
