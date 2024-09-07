@@ -9,6 +9,7 @@ Supported MC versions: 1.8-1.21. Folia, Geyser and [other plugins](F-A-Q.md) are
 * [Discord server](https://discord.gg/EQExhK8Ghm)
 * List of checks: [CHECKS.md](CHECKS.md)
 * Frequently asked questions: [F-A-Q.md](F-A-Q.md)
+* More precise config: [MILKv2's config](https://github.com/MILKv2/lightanticheat-config)
 
 ## You want to contribute?
 Check out the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
