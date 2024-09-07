@@ -5,7 +5,7 @@ api-version: '1.13'
 folia-supported: true
 softdepend: [ Geyser-Spigot, floodgate, ViaVersion, GSit, mcMMO, ValhallaMMO, VeinMiner, AureliumSkills, ExecutableItems, EnchantsSquared ]
 description: A lightweight and customizable anticheat, designed to detect common hacks.
-author: Vekster, pawsashatoy
+authors: [ Vekster, pawsashatoy, Onako2 ]
 website: www.reworlds.net
 commands:
   lightanticheat:
