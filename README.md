@@ -48,6 +48,18 @@ Check out the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
 Specific bypass permissions can be enabled in the config
 * lightanticheat.* - all the above
 
-# Maven/Gradle
-
-*Coming soon*
+## Maven/Gradle
+You can add LightAntiCheat's API as a Maven dependency:
+````xml
+<dependency>
+  <groupId>me.vekster</groupId>
+  <artifactId>lightanticheat</artifactId>
+  <version>1.2.7</version>
+</dependency>
+````
+Or use the maven dependency with Gradle:
+```gradle
+dependencies {
+    compileOnly 'me.vekster:lightanticheat:1.2.7'
+}
+```
