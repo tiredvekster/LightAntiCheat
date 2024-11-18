@@ -21,8 +21,8 @@ dependencies {
     // JetBrains Annotations
     implementation 'org.jetbrains:annotations:25.0.0'
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.34'
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
     // Spigot API
     compileOnly files('comp/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar')
     // Netty
