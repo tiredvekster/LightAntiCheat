@@ -32,7 +32,7 @@ dependencies {
     // FoliaLib
     implementation 'com.tcoded:FoliaLib:0.4.2'
     // Floodgate
-    compileOnly 'org.geysermc.floodgate:api:2.2.3-SNAPSHOT'
+    compileOnly 'org.geysermc.floodgate:api:2.2.4-SNAPSHOT'
     // Config Updater
     implementation 'com.tchristofferson:ConfigUpdater:2.1-SNAPSHOT'
     // MultiVersion
