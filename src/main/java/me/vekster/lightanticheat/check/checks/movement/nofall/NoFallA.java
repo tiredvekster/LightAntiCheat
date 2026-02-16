@@ -44,6 +44,7 @@ public class NoFallA extends MovementCheck implements Listener {
                 cache.glidingTicks >= -3 || cache.riptidingTicks >= -5)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 150 && time - cache.lastInWater > 150 &&
                 time - cache.lastKnockback > 750 && time - cache.lastKnockbackNotVanilla > 3000 &&
                 time - cache.lastWasFished > 4000 && time - cache.lastTeleport > 900 &&
@@ -52,7 +53,9 @@ public class NoFallA extends MovementCheck implements Listener {
                 time - cache.lastSlimeBlockVertical > 2500 && time - cache.lastSlimeBlockHorizontal > 2500 &&
                 time - cache.lastHoneyBlockVertical > 2500 && time - cache.lastHoneyBlockHorizontal > 2500 &&
                 time - cache.lastWasHit > 350 && time - cache.lastWasDamaged > 150 &&
-                time - cache.lastFlight > 750;
+                time - cache.lastFlight > 750 &&
+                !hasRecent121MobilityBoost(cache, time, true) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     private static final Map<Integer, Float> EVENTS_JUMP_0 = new ConcurrentHashMap<>();
@@ -178,7 +181,7 @@ public class NoFallA extends MovementCheck implements Listener {
 
         Map<Integer, Float> eventMap;
         Map<Double, Float> distanceMap;
-        int jumpEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP);
+        int jumpEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST);
         switch (jumpEffectAmplifier) {
             case 0:
                 eventMap = EVENTS_JUMP_0;
@@ -261,7 +264,7 @@ public class NoFallA extends MovementCheck implements Listener {
 
         if (getEffectAmplifier(lacPlayer.cache, VerUtil.potions.get("LEVITATION")) > 0 ||
                 getEffectAmplifier(lacPlayer.cache, VerUtil.potions.get("SLOW_FALLING")) > 0 ||
-                getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP) > 5) {
+                getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST) > 5) {
             Buffer buffer = getBuffer(player, true);
             buffer.put("effectTime", System.currentTimeMillis());
         }

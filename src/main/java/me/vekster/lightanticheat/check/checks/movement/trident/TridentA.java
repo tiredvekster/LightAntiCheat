@@ -35,6 +35,7 @@ public class TridentA extends MovementCheck implements Listener {
         if (cache.flyingTicks >= -4 || cache.climbingTicks >= -2)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 150 &&
                 time - cache.lastKnockback > 500 && time - cache.lastKnockbackNotVanilla > 2000 &&
                 time - cache.lastWasFished > 3000 && time - cache.lastTeleport > 500 &&
@@ -46,7 +47,10 @@ public class TridentA extends MovementCheck implements Listener {
                 time - cache.lastWasHit > 300 && time - cache.lastWasDamaged > 150 &&
                 time - cache.lastKbVelocity > 500 && time - cache.lastAirKbVelocity > 1000 &&
                 time - cache.lastStrongKbVelocity > 2500 && time - cache.lastStrongAirKbVelocity > 5000 &&
-                time - cache.lastFlight > 750;
+                time - cache.lastFlight > 750 &&
+                !hasRecent121MobilityBoost(cache, time, false) &&
+                !hasRecentMobilityContext(cache, lacPlayer, time, 900, 1500, 1200, 2000, 1600, 2600) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -100,7 +104,7 @@ public class TridentA extends MovementCheck implements Listener {
         }
         ItemStack off = lacPlayer.getItemInOffHand();
         if (off != null && off.getType() == VerUtil.material.get("TRIDENT") &&
-                main.getEnchantmentLevel(VerUtil.enchantment.get("RIPTIDE")) > 3) {
+                off.getEnchantmentLevel(VerUtil.enchantment.get("RIPTIDE")) > 3) {
             return;
         }
 

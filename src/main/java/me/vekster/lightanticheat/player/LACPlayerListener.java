@@ -17,12 +17,14 @@ import me.vekster.lightanticheat.util.config.ConfigManager;
 import me.vekster.lightanticheat.util.cooldown.CooldownUtil;
 import me.vekster.lightanticheat.util.detection.CheckUtil;
 import me.vekster.lightanticheat.util.detection.LeanTowards;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.VerPlayer;
 import me.vekster.lightanticheat.version.VerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -65,7 +67,23 @@ public class LACPlayerListener implements Listener {
         });
     }
 
+    private static LACPlayer getInitializedLacPlayer(Player player) {
+        if (!player.isOnline())
+            return null;
+
+        LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
+        if (lacPlayer != null && lacPlayer.cache != null)
+            return lacPlayer;
+
+        loadLacPlayer(player);
+        lacPlayer = LACPlayer.getLacPlayer(player);
+        return lacPlayer != null && lacPlayer.cache != null ? lacPlayer : null;
+    }
+
     private static void loadLacPlayer(Player player) {
+        if (!player.isOnline())
+            return;
+
         UUID uuid = player.getUniqueId();
 
         if (!LACPlayer.PLAYERS.containsKey(uuid)) {
@@ -190,12 +208,18 @@ public class LACPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void lastGlidingRiptidingFlight(LACPlayerMoveEvent event) {
+        long now = System.currentTimeMillis();
+        PlayerCache cache = event.getLacPlayer().cache;
         if (event.isPlayerGliding())
-            event.getLacPlayer().cache.lastGliding = System.currentTimeMillis();
-        if (event.isPlayerRiptiding())
-            event.getLacPlayer().cache.lastRiptiding = System.currentTimeMillis();
+            cache.lastGliding = now;
+        if (event.isPlayerRiptiding()) {
+            cache.lastRiptiding = now;
+            if (!cache.hadRiptiding)
+                cache.lastRiptideDash = now;
+        }
+        cache.hadRiptiding = event.isPlayerRiptiding();
         if (event.isPlayerFlying())
-            event.getLacPlayer().cache.lastFlight = System.currentTimeMillis();
+            cache.lastFlight = now;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -302,13 +326,13 @@ public class LACPlayerListener implements Listener {
             Arrow arrow = (Arrow) event.getDamager();
             if (arrow.getShooter() instanceof Player) {
                 damager = (Player) arrow.getShooter();
-                enchantment = Enchantment.ARROW_KNOCKBACK;
+                enchantment = Enchantment.PUNCH;
             }
         } else if (event.getDamager().getType() == VerUtil.entityTypes.get("SPECTRAL_ARROW")) {
             ProjectileSource shooter = VerUtil.getSpectralArrowShooter(event.getDamager());
             if (shooter instanceof Player) {
                 damager = (Player) shooter;
-                enchantment = Enchantment.ARROW_KNOCKBACK;
+                enchantment = Enchantment.PUNCH;
             }
         }
         if (damager == null)
@@ -341,47 +365,71 @@ public class LACPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void lastBlockPlace(LACPlayerPlaceBlockEvent event) {
         Player player = event.getPlayer();
-        LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
-        lacPlayer.cache.lastBlockPlace = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
+        Scheduler.entityThread(player, () -> {
+            LACPlayer lacPlayer = getInitializedLacPlayer(player);
+            if (lacPlayer == null) return;
+            lacPlayer.cache.lastBlockPlace = now;
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void lastBlockBreak(LACPlayerBreakBlockEvent event) {
         Player player = event.getPlayer();
-        LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
-        lacPlayer.cache.lastBlockBreak = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
+        Scheduler.entityThread(player, () -> {
+            LACPlayer lacPlayer = getInitializedLacPlayer(player);
+            if (lacPlayer == null) return;
+            lacPlayer.cache.lastBlockBreak = now;
+        });
     }
 
     @EventHandler
     public void lastTeleport(PlayerTeleportEvent event) {
         if (CheckUtil.isExternalNPC(event)) return;
         Player player = event.getPlayer();
-        LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
-        lacPlayer.cache.lastTeleport = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
+        Scheduler.entityThread(player, () -> {
+            LACPlayer lacPlayer = getInitializedLacPlayer(player);
+            if (lacPlayer == null) return;
+            lacPlayer.cache.lastTeleport = now;
+        });
     }
 
     @EventHandler
     public void lastWorldChange(PlayerChangedWorldEvent event) {
         if (CheckUtil.isExternalNPC(event)) return;
         Player player = event.getPlayer();
-        LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
-        lacPlayer.cache.lastWorldChange = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
+        Scheduler.entityThread(player, () -> {
+            LACPlayer lacPlayer = getInitializedLacPlayer(player);
+            if (lacPlayer == null) return;
+            lacPlayer.cache.lastWorldChange = now;
+        });
     }
 
     @EventHandler
     public void lastGamemodeChange(PlayerGameModeChangeEvent event) {
         if (CheckUtil.isExternalNPC(event)) return;
         Player player = event.getPlayer();
-        LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
-        lacPlayer.cache.lastGamemodeChange = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
+        Scheduler.entityThread(player, () -> {
+            LACPlayer lacPlayer = getInitializedLacPlayer(player);
+            if (lacPlayer == null) return;
+            lacPlayer.cache.lastGamemodeChange = now;
+        });
     }
 
     @EventHandler
     public void lastRespawn(PlayerRespawnEvent event) {
         if (CheckUtil.isExternalNPC(event)) return;
         Player player = event.getPlayer();
-        LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
-        lacPlayer.cache.lastRespawn = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
+        Scheduler.entityThread(player, () -> {
+            LACPlayer lacPlayer = getInitializedLacPlayer(player);
+            if (lacPlayer == null) return;
+            lacPlayer.cache.lastRespawn = now;
+        });
     }
 
     @EventHandler
@@ -415,7 +463,7 @@ public class LACPlayerListener implements Listener {
     @EventHandler
     public void lastWindCharge(PlayerInteractEvent event) {
         if (CheckUtil.isExternalNPC(event)) return;
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR)
             return;
         Player player = event.getPlayer();
         ItemStack main = VerPlayer.getItemInMainHand(player);
@@ -455,6 +503,23 @@ public class LACPlayerListener implements Listener {
             lacPlayer.cache.lastWindBurst = System.currentTimeMillis();
             lacPlayer.cache.lastWindBurstNotVanilla = System.currentTimeMillis();
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void lastCrystalAndWindChargeImpact(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player))
+            return;
+        Player player = (Player) event.getEntity();
+        LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
+        if (lacPlayer == null)
+            return;
+
+        EntityType damagerType = event.getDamager().getType();
+        long now = System.currentTimeMillis();
+        if ("ENDER_CRYSTAL".equals(damagerType.name()))
+            lacPlayer.cache.lastEndCrystalImpact = now;
+        if (damagerType == VerUtil.entityTypes.get("WIND_CHARGE"))
+            lacPlayer.cache.lastWindChargeImpact = now;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -684,21 +749,32 @@ public class LACPlayerListener implements Listener {
         Player player = (Player) event.getEntity();
         if (CheckUtil.isExternalNPC(player)) return;
         LACPlayer lacPlayer = LACPlayer.getLacPlayer(player);
+        long currentTime = System.currentTimeMillis();
         if (event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
-            lacPlayer.cache.lastBlockExplosion = System.currentTimeMillis();
+            lacPlayer.cache.lastBlockExplosion = currentTime;
             lacPlayer.cache.vectorOnBlockExplosion = null;
+            lacPlayer.cache.lastWasDamaged = currentTime;
+            lacPlayer.cache.lastKbVelocity = currentTime;
+            lacPlayer.cache.lastAirKbVelocity = currentTime;
+            lacPlayer.cache.vectorOnKbVelocity = null;
+            lacPlayer.cache.vectorOnAirKbVelocity = null;
 
         }
         if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
-            lacPlayer.cache.lastEntityExplosion = System.currentTimeMillis();
+            lacPlayer.cache.lastEntityExplosion = currentTime;
             lacPlayer.cache.vectorOnEntityExplosion = null;
+            lacPlayer.cache.lastWasDamaged = currentTime;
+            lacPlayer.cache.lastKbVelocity = currentTime;
+            lacPlayer.cache.lastAirKbVelocity = currentTime;
+            lacPlayer.cache.vectorOnKbVelocity = null;
+            lacPlayer.cache.vectorOnAirKbVelocity = null;
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void lastBlockExplosion(LACAsyncPlayerMoveEvent event) {
         for (CachedEntity cachedEntity : event.getLacPlayer().cache.entitiesNearby)
-            if (cachedEntity.entityType == EntityType.PRIMED_TNT) {
+            if (cachedEntity.entityType == EntityType.TNT) {
                 LACPlayer lacPlayer = event.getLacPlayer();
                 lacPlayer.cache.lastBlockExplosion = System.currentTimeMillis();
                 lacPlayer.cache.vectorOnBlockExplosion = null;
@@ -727,16 +803,39 @@ public class LACPlayerListener implements Listener {
                     asyncPlayers.put(player.getUniqueId(), lacPlayer);
                     PlayerCache cache = lacPlayer.cache;
                     Scheduler.entityThread(player, () -> {
-                        cache.sneakingTicks = increase(player.isSneaking(), cache.sneakingTicks);
-                        cache.sprintingTicks = increase(player.isSprinting(), cache.sprintingTicks);
-                        cache.swimmingTicks = increase(lacPlayer.isSwimming(), cache.swimmingTicks);
-                        cache.climbingTicks = increase(lacPlayer.isClimbing(), cache.climbingTicks);
-                        cache.glidingTicks = increase(lacPlayer.isGliding(), cache.glidingTicks);
-                        cache.riptidingTicks = increase(lacPlayer.isRiptiding(), cache.riptidingTicks);
-                        cache.flyingTicks = increase(player.isFlying(), cache.flyingTicks);
-                        cache.blockingTicks = increase(player.isBlocking(), cache.blockingTicks);
-                        if (player.isInsideVehicle())
-                            cache.lastInsideVehicle = System.currentTimeMillis();
+                        try {
+                            World asyncWorld = AsyncUtil.getWorld(player);
+                            World playerWorld = player.getWorld();
+                            if (!FoliaUtil.isStable(player) || asyncWorld == null || playerWorld == null ||
+                                    !asyncWorld.getUID().equals(playerWorld.getUID()))
+                                return;
+                            cache.sneakingTicks = increase(player.isSneaking(), cache.sneakingTicks);
+                            cache.sprintingTicks = increase(player.isSprinting(), cache.sprintingTicks);
+                            cache.swimmingTicks = increase(lacPlayer.isSwimming(), cache.swimmingTicks);
+                            int previousClimbingTicks = cache.climbingTicks;
+                            cache.climbingTicks = increase(lacPlayer.isClimbing(), cache.climbingTicks);
+                            if (previousClimbingTicks >= 0 && cache.climbingTicks < 0 ||
+                                    previousClimbingTicks < 0 && cache.climbingTicks >= 0) {
+                                cache.lastClimbingTransition = System.currentTimeMillis();
+                            }
+                            cache.glidingTicks = increase(lacPlayer.isGliding(), cache.glidingTicks);
+                            cache.riptidingTicks = increase(lacPlayer.isRiptiding(), cache.riptidingTicks);
+                            ItemStack chest = lacPlayer.getArmorPiece(EquipmentSlot.CHEST);
+                            Material chestType = chest == null ? Material.AIR : chest.getType();
+                            boolean hasElytraEquipped = chestType == VerUtil.material.get("ELYTRA");
+                            if (cache.hadElytraEquipped != hasElytraEquipped) {
+                                if (hasElytraEquipped)
+                                    cache.lastElytraEquip = System.currentTimeMillis();
+                                else
+                                    cache.lastElytraUnequip = System.currentTimeMillis();
+                                cache.hadElytraEquipped = hasElytraEquipped;
+                            }
+                            cache.flyingTicks = increase(player.isFlying(), cache.flyingTicks);
+                            cache.blockingTicks = increase(player.isBlocking(), cache.blockingTicks);
+                            if (player.isInsideVehicle())
+                                cache.lastInsideVehicle = System.currentTimeMillis();
+                        } catch (IllegalStateException ignored) {
+                        }
                     });
                 });
                 setAsyncPlayers(asyncPlayers);

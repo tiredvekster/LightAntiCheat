@@ -37,6 +37,7 @@ public class NoFallB extends MovementCheck implements Listener {
                 cache.glidingTicks >= -3 || cache.riptidingTicks >= -5)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 150 && time - cache.lastInWater > 150 &&
                 time - cache.lastKnockback > 750 && time - cache.lastKnockbackNotVanilla > 3000 &&
                 time - cache.lastWasFished > 4000 && time - cache.lastTeleport > 900 &&
@@ -45,7 +46,9 @@ public class NoFallB extends MovementCheck implements Listener {
                 time - cache.lastSlimeBlockVertical > 2500 && time - cache.lastSlimeBlockHorizontal > 2500 &&
                 time - cache.lastHoneyBlockVertical > 2500 && time - cache.lastHoneyBlockHorizontal > 2500 &&
                 time - cache.lastWasHit > 350 && time - cache.lastWasDamaged > 150 &&
-                time - cache.lastFlight > 750;
+                time - cache.lastFlight > 750 &&
+                !hasRecent121MobilityBoost(cache, time, true) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -128,7 +131,7 @@ public class NoFallB extends MovementCheck implements Listener {
             return;
 
         updateDownBlocks(player, lacPlayer, event.getToDownBlocks());
-        int jumpEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP);
+        int jumpEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST);
         Scheduler.runTask(true, () -> {
             if (jumpEffectAmplifier <= 2) callViolationEventIfRepeat(player, lacPlayer, null, buffer, 3000);
             else callViolationEventIfRepeat(player, lacPlayer, null, buffer, 600);

@@ -62,6 +62,7 @@ public class FlightA extends MovementCheck implements Listener {
                 cache.glidingTicks >= -3 || cache.riptidingTicks >= -5)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 150 && time - cache.lastInWater > 150 &&
                 time - cache.lastKnockback > 750 && time - cache.lastKnockbackNotVanilla > 3000 &&
                 time - cache.lastWasFished > 4000 && time - cache.lastTeleport > 700 &&
@@ -75,8 +76,9 @@ public class FlightA extends MovementCheck implements Listener {
                 time - cache.lastStrongKbVelocity > 5000 && time - cache.lastStrongAirKbVelocity > 15 * 1000 &&
                 time - cache.lastFlight > 750 &&
                 time - cache.lastGliding > 2000 && time - cache.lastRiptiding > 3500 &&
-                time - cache.lastWindCharge > 1000 && time - cache.lastWindChargeReceive > 500 &&
-                time - cache.lastWindBurst > 1500 && time - cache.lastWindBurstNotVanilla > 4000;
+                !hasRecent121MobilityBoost(cache, time, true) &&
+                !hasRecentMobilityContext(cache, lacPlayer, time, 900, 1500, 1200, 2000, 1600, 2600) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -142,10 +144,10 @@ public class FlightA extends MovementCheck implements Listener {
         buffer.put("flightTicks", buffer.getInt("flightTicks") + 1);
         int fallingTicks = buffer.getInt("flightTicks");
 
-        int slowFallingEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP);
+        int slowFallingEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST);
         if (getItemStackAttributes(player, "GENERIC_GRAVITY") != 0)
             slowFallingEffectAmplifier += 1;
-        int jumpEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP);
+        int jumpEffectAmplifier = getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST);
 
         double attributeAmount = Math.max(
                 getItemStackAttributes(player, "GENERIC_JUMP_STRENGTH"),
@@ -290,7 +292,7 @@ public class FlightA extends MovementCheck implements Listener {
 
         if (getEffectAmplifier(lacPlayer.cache, VerUtil.potions.get("LEVITATION")) > 0 ||
                 getEffectAmplifier(lacPlayer.cache, VerUtil.potions.get("SLOW_FALLING")) > 1 ||
-                getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP) > 6) {
+                getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST) > 6) {
             Buffer buffer = getBuffer(player, true);
             buffer.put("effectTime", System.currentTimeMillis());
         }

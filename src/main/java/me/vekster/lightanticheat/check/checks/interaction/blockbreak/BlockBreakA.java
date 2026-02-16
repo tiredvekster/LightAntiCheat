@@ -36,8 +36,11 @@ public class BlockBreakA extends InteractionCheck implements Listener {
     @EventHandler
     public void onAsyncBlockBreak(LACAsyncPlayerBreakBlockEvent event) {
         Buffer buffer = getBuffer(event.getPlayer(), true);
-        buffer.put("lastAsyncResult", flag(event.getPlayer(), event.getLacPlayer(),
-                event.getBlock(), event.getEyeLocation(), true));
+        if (!flagSafe(event.getPlayer(), event.getLacPlayer(), event.getBlockWorld(), true)) {
+            buffer.put("lastAsyncResult", false);
+            return;
+        }
+        buffer.put("lastAsyncResult", true);
     }
 
     @EventHandler
@@ -45,8 +48,17 @@ public class BlockBreakA extends InteractionCheck implements Listener {
         Buffer buffer = getBuffer(event.getPlayer(), true);
         if (!buffer.getBoolean("lastAsyncResult"))
             return;
-        if (!flag(event.getPlayer(), event.getLacPlayer(),
-                event.getBlock(), event.getPlayer().getEyeLocation(), false))
+        Player player = event.getPlayer();
+        LACPlayer lacPlayer = event.getLacPlayer();
+        Block block = event.getBlock();
+        Location eyeLocation = player.getEyeLocation();
+
+        if (!flagSafe(player, lacPlayer, block.getWorld().getName(), false))
+            return;
+
+        boolean forceFlag = shouldForceFlagByAngle(block.getX(), block.getZ(), eyeLocation);
+        boolean raytraceFlag = !forceFlag && executeRaytrace(player, block.getWorld().getName(), block.getX(), block.getZ(), block.getType(), buffer);
+        if (!(forceFlag || raytraceFlag))
             return;
 
         long currentTime = System.currentTimeMillis();
@@ -58,17 +70,13 @@ public class BlockBreakA extends InteractionCheck implements Listener {
         if (buffer.getInt("flags") <= 1)
             return;
 
-        Player player = event.getPlayer();
-        LACPlayer lacPlayer = event.getLacPlayer();
-        Block block = event.getBlock();
-
         Scheduler.runTaskLater(player, () -> {
             if (getYawChange(player.getEyeLocation(), lacPlayer) > 30.0)
                 return;
 
             if (AureliumSkillsHook.isPrevented(player) ||
                     VeinMinerHook.isPrevented(player) ||
-                    McMMOHook.isPrevented(block.getType()))
+                    McMMOHook.isPrevented(player, block))
                 return;
 
             if (EnchantsSquaredHook.hasEnchantment(player, "Excavation", "Deforestation", "Harvesting"))
@@ -78,13 +86,26 @@ public class BlockBreakA extends InteractionCheck implements Listener {
         }, 1);
     }
 
-    private boolean flag(Player player, LACPlayer lacPlayer, Block block, Location eyeLocation, boolean async) {
+    private boolean flagSafe(Player player, LACPlayer lacPlayer, String blockWorld, boolean async) {
         if (!isCheckAllowed(player, lacPlayer, async))
+            return false;
+        return player.getWorld().getName().equals(blockWorld);
+    }
+
+    private boolean shouldForceFlagByAngle(int blockX, int blockZ, Location eyeLocation) {
+        Vector vector = new Vector(blockX + 0.5D, 0.0D, blockZ + 0.5D)
+                .subtract(eyeLocation.toVector().setY(0.0D));
+        float angle = eyeLocation.getDirection().setY(0.0D).angle(vector) * 57.2958F;
+        return angle > 120 && eyeLocation.getPitch() < 60 && eyeLocation.getPitch() > -40;
+    }
+
+    private boolean flagRaytrace(Player player, String blockWorld, int blockX, int blockZ, Material blockType) {
+        if (!player.getWorld().getName().equals(blockWorld))
             return false;
 
         boolean flag = true;
-        Location blockLocation = block.getLocation();
-        Block targetBlock = lacPlayer.getTargetBlockExact(10);
+        Location blockLocation = new Location(player.getWorld(), blockX, 0.0D, blockZ);
+        Block targetBlock = player.getTargetBlockExact(10);
         if (targetBlock != null)
             if (distanceHorizontal(blockLocation, targetBlock.getLocation()) <= 3.5)
                 flag = false;
@@ -94,7 +115,7 @@ public class BlockBreakA extends InteractionCheck implements Listener {
             transparent.add(Material.AIR);
             transparent.add(Material.WATER);
             transparent.add(Material.LAVA);
-            transparent.add(block.getType());
+            transparent.add(blockType);
             if (targetBlock != null)
                 transparent.add(targetBlock.getType());
 
@@ -107,11 +128,22 @@ public class BlockBreakA extends InteractionCheck implements Listener {
             }
         }
 
-        Vector vector = blockLocation.toVector().setY(0.0D).subtract(eyeLocation.toVector().setY(0.0D));
-        float angle = eyeLocation.getDirection().setY(0.0D).angle(vector) * 57.2958F;
-        if (angle > 120 && eyeLocation.getPitch() < 60 && eyeLocation.getPitch() > -40)
-            flag = true;
         return flag;
+    }
+
+    private boolean executeRaytrace(Player player, String blockWorld, int blockX, int blockZ, Material blockType, Buffer buffer) {
+        try {
+            return flagRaytrace(player, blockWorld, blockX, blockZ, blockType);
+        } catch (IllegalStateException exception) {
+            resetBuffer(buffer);
+            return false;
+        }
+    }
+
+    private void resetBuffer(Buffer buffer) {
+        buffer.put("lastAsyncResult", false);
+        buffer.put("flags", 0);
+        buffer.put("lastFlag", 0L);
     }
 
     private static double getYawChange(Location eyeLocation, LACPlayer lacPlayer) {

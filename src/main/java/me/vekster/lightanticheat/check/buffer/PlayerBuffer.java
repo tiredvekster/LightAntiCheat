@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 class PlayerBuffer {
 
     PlayerBuffer(boolean async) {
+        this.async = async;
         updated = System.currentTimeMillis();
     }
 

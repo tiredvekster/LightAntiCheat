@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '9.3.1'
     id 'java'
     id 'maven-publish'
 }
@@ -9,40 +9,45 @@ version = '1.2.7'
 
 repositories {
     mavenCentral()
-    // Config Updater
-    maven { url 'https://oss.sonatype.org/content/groups/public/' }
-    // Floodgate
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
     maven { url 'https://repo.opencollab.dev/main/' }
-    // FoliaLib
-    maven { url 'https://nexuslite.gcnt.net/repos/other/' }
+    maven { url 'https://repo.opencollab.dev/maven-snapshots/' }
+    maven { url 'https://repo.tcoded.com/releases' }
 }
 
+def minecraftApiVersion = '1.21.11-R0.1-SNAPSHOT'
+
 dependencies {
-    // JetBrains Annotations
-    implementation 'org.jetbrains:annotations:26.0.1'
-    // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.38'
-    annotationProcessor 'org.projectlombok:lombok:1.18.38'
-    // Spigot API
-    compileOnly files('comp/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar')
-    // Netty
-    compileOnly 'io.netty:netty-all:4.2.3.Final'
-    // LightInjector
+    implementation 'org.jetbrains:annotations:26.0.2-1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
+
+    // Paper 1.21.x = Java 21+
+    compileOnly "io.papermc.paper:paper-api:${minecraftApiVersion}"
+
+    compileOnly 'io.netty:netty-all:4.1.131.Final'
     implementation files('impl/LightInjector-1.0.2-forked.jar')
-    // FoliaLib
-    implementation 'com.tcoded:FoliaLib:0.4.2'
-    // Floodgate
-    compileOnly 'org.geysermc.floodgate:api:2.2.3-SNAPSHOT'
-    // Config Updater
-    implementation 'com.tchristofferson:ConfigUpdater:2.1-SNAPSHOT'
-    // MultiVersion
+    implementation 'com.tcoded:FoliaLib:0.5.1'
+    compileOnly 'org.geysermc.floodgate:api:2.2.4-SNAPSHOT'
+    implementation 'com.tchristofferson:ConfigUpdater:2.2'
     implementation fileTree('impl/multiversion')
 }
 
 java {
+    // ВАЖНО: именно это влияет на variant-aware dependency resolution (org.gradle.jvm.version)
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    // Дублируем на всякий случай, чтобы и javac точно таргетил 21
+    options.release.set(21)
 }
 
 publishing {
@@ -57,16 +62,11 @@ publishing {
         }
     }
 
-
     publications {
         gpr(MavenPublication) {
             from(components.java)
         }
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
 }
 
 processResources {

@@ -7,7 +7,7 @@ public class CooldownElement<T> {
         this.time = time;
     }
 
-    public T result;
-    public long time;
+    public volatile T result;
+    public volatile long time;
 
 }

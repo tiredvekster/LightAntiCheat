@@ -2,6 +2,8 @@ package me.vekster.lightanticheat.check.checks.combat;
 
 import me.vekster.lightanticheat.check.Check;
 import me.vekster.lightanticheat.check.CheckName;
+import me.vekster.lightanticheat.player.LACPlayer;
+import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.util.async.AsyncUtil;
 import me.vekster.lightanticheat.version.VerUtil;
 import org.bukkit.Location;
@@ -31,6 +33,33 @@ public abstract class CombatCheck extends Check {
         flyingEntities.add(VerUtil.entityTypes.get("COD"));
         flyingEntities.add(VerUtil.entityTypes.get("TROPICAL_FISH"));
         flyingEntities.add(VerUtil.entityTypes.get("DOLPHIN"));
+    }
+
+
+    protected boolean isHighPingPlayer(LACPlayer lacPlayer) {
+        return Math.max(lacPlayer.getPing(true), 0) >= 220;
+    }
+
+    protected long getPingAwareWindow(LACPlayer lacPlayer, long normalWindow, long highPingWindow) {
+        return isHighPingPlayer(lacPlayer) ? highPingWindow : normalWindow;
+    }
+
+    protected boolean hasRecentMobilityContext(PlayerCache cache, LACPlayer lacPlayer, long time,
+                                               long normalElytraWindow,
+                                               long highPingElytraWindow,
+                                               long normalRiptideWindow,
+                                               long highPingRiptideWindow,
+                                               long normalExplosionWindow,
+                                               long highPingExplosionWindow) {
+        long elytraWindow = getPingAwareWindow(lacPlayer, normalElytraWindow, highPingElytraWindow);
+        long riptideWindow = getPingAwareWindow(lacPlayer, normalRiptideWindow, highPingRiptideWindow);
+        long explosionWindow = getPingAwareWindow(lacPlayer, normalExplosionWindow, highPingExplosionWindow);
+
+        return time - cache.lastElytraEquip <= elytraWindow ||
+                time - cache.lastElytraUnequip <= elytraWindow ||
+                time - cache.lastRiptideDash <= riptideWindow ||
+                time - cache.lastEndCrystalImpact <= explosionWindow ||
+                time - cache.lastWindChargeImpact <= explosionWindow;
     }
 
     public double distanceToHitbox(Player player, Entity entity) {

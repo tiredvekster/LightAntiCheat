@@ -42,6 +42,7 @@ public class SpeedD extends MovementCheck implements Listener {
                 cache.glidingTicks >= -5 || cache.riptidingTicks >= -6)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 250 &&
                 time - cache.lastKnockback > 1500 && time - cache.lastKnockbackNotVanilla > 5000 &&
                 time - cache.lastWasFished > 3000 && time - cache.lastTeleport > 600 &&
@@ -53,7 +54,9 @@ public class SpeedD extends MovementCheck implements Listener {
                 time - cache.lastKbVelocity > 500 && time - cache.lastAirKbVelocity > 1000 &&
                 time - cache.lastStrongKbVelocity > 2500 && time - cache.lastStrongAirKbVelocity > 5000 &&
                 time - cache.lastFlight > 3000 &&
-                time - cache.lastGliding > 1500 && time - cache.lastRiptiding > 3000;
+                time - cache.lastGliding > 1500 && time - cache.lastRiptiding > 3000 &&
+                !hasRecent121MobilityBoost(cache, time, true) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler

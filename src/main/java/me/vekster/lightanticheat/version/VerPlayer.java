@@ -1,17 +1,17 @@
 package me.vekster.lightanticheat.version;
 
-import me.vekster.lightanticheat.Main;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.util.annotation.SecureAsync;
+import me.vekster.lightanticheat.util.async.AsyncUtil;
 import me.vekster.lightanticheat.util.cooldown.CooldownUtil;
-import me.vekster.lightanticheat.util.logger.LogType;
-import me.vekster.lightanticheat.util.logger.Logger;
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.reflection.ReflectionException;
 import me.vekster.lightanticheat.util.reflection.ReflectionUtil;
 import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -22,25 +22,45 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VerPlayer {
 
     private static final Map<String, Boolean> CACHE = new HashMap<>();
     private static final Map<String, Boolean> ASYNC_CACHE = new ConcurrentHashMap<>();
-    private static Class<?> craftPlayerClass;
+    private static volatile Class<?> craftPlayerClass;
+    private static volatile boolean craftPlayerClassLookupFailed;
     private final Player PLAYER;
 
-    static {
-        try {
-            craftPlayerClass = ReflectionUtil.classForName("org.bukkit.craftbukkit.$version.entity.CraftPlayer");
-        } catch (ReflectionException e) {
-            Logger.logConsole(LogType.ERROR, "(" + Main.getInstance().getName() + ") CraftPlayer class is not found!");
-        }
-    }
+
 
     public VerPlayer(Player player) {
         this.PLAYER = player;
+    }
+
+
+    @Nullable
+    private static Class<?> getCraftPlayerClass() {
+        if (craftPlayerClass != null)
+            return craftPlayerClass;
+        if (craftPlayerClassLookupFailed)
+            return null;
+
+        synchronized (VerPlayer.class) {
+            if (craftPlayerClass != null)
+                return craftPlayerClass;
+            if (craftPlayerClassLookupFailed)
+                return null;
+
+            try {
+                craftPlayerClass = ReflectionUtil.classForName("org.bukkit.craftbukkit.$version.entity.CraftPlayer");
+            } catch (ReflectionException ignored) {
+                craftPlayerClassLookupFailed = true;
+                return null;
+            }
+            return craftPlayerClass;
+        }
     }
 
     public static int getPingWithoutCache(Player player, boolean async) {
@@ -60,17 +80,20 @@ public class VerPlayer {
                 Object value = ReflectionUtil.runDeclaredMethod(player, methodName);
                 if (value instanceof Integer)
                     return (int) value;
-                return 250;
             }
 
-            if (craftPlayerClass == null) return 0;
+            Class<?> craftPlayerClass = getCraftPlayerClass();
+            if (craftPlayerClass == null)
+                return 250;
+
             Object craftPlayer = craftPlayerClass.cast(player);
             Object entityPlayer = ReflectionUtil.runDeclaredMethod(craftPlayer, "getHandle");
-            if (entityPlayer == null) return 0;
+            if (entityPlayer == null)
+                return 250;
             Object result = ReflectionUtil.getDeclaredField(entityPlayer, "ping");
             if (result instanceof Integer)
                 return (int) result;
-        } catch (ReflectionException e) {
+        } catch (ReflectionException | RuntimeException | LinkageError ignored) {
             return 250;
         }
         return 250;
@@ -92,6 +115,15 @@ public class VerPlayer {
     @SecureAsync
     public int getPing(boolean async) {
         return CooldownUtil.getPing(LACPlayer.getLacPlayer(PLAYER).cooldown, PLAYER, async);
+    }
+
+
+    public static UUID getUniqueId(Player player) {
+        return player.getUniqueId();
+    }
+
+    public UUID getUniqueId() {
+        return PLAYER.getUniqueId();
     }
 
     @SecureAsync
@@ -128,12 +160,32 @@ public class VerPlayer {
 
     @SecureAsync
     public static boolean isClimbing(Player player) {
-        return VerUtil.multiVersion.isClimbing(player);
+        try {
+            if (!isPlayerStableForRegion(player))
+                return false;
+            return VerUtil.multiVersion.isClimbing(player);
+        } catch (IllegalStateException ignored) {
+            return false;
+        }
     }
 
     @SecureAsync
     public boolean isClimbing() {
-        return VerUtil.multiVersion.isClimbing(PLAYER);
+        return isClimbing(PLAYER);
+    }
+
+    private static boolean isPlayerStableForRegion(Player player) {
+        try {
+            if (!FoliaUtil.isStable(player))
+                return false;
+            World asyncWorld = AsyncUtil.getWorld(player);
+            World playerWorld = player.getWorld();
+            if (asyncWorld == null || playerWorld == null)
+                return false;
+            return asyncWorld.getUID().equals(playerWorld.getUID());
+        } catch (IllegalStateException ignored) {
+            return false;
+        }
     }
 
     @SecureAsync

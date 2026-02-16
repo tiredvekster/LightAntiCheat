@@ -32,6 +32,7 @@ public class NoSlowA extends MovementCheck implements Listener {
                 cache.glidingTicks >= -3 || cache.riptidingTicks >= -5)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 150 && time - cache.lastInWater > 150 &&
                 time - cache.lastKnockback > 750 && time - cache.lastKnockbackNotVanilla > 3000 &&
                 time - cache.lastWasFished > 4000 && time - cache.lastTeleport > 500 &&
@@ -42,7 +43,9 @@ public class NoSlowA extends MovementCheck implements Listener {
                 time - cache.lastWasHit > 350 && time - cache.lastWasDamaged > 150 &&
                 time - cache.lastKbVelocity > 500 && time - cache.lastAirKbVelocity > 1000 &&
                 time - cache.lastStrongKbVelocity > 2500 && time - cache.lastStrongAirKbVelocity > 5000 &&
-                time - cache.lastFlight > 750;
+                time - cache.lastFlight > 750 &&
+                !hasRecent121MobilityBoost(cache, time, false) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -130,7 +133,7 @@ public class NoSlowA extends MovementCheck implements Listener {
             return;
 
         if (getEffectAmplifier(lacPlayer.cache, VerUtil.potions.get("LEVITATION")) > 0 ||
-                getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP) > 5) {
+                getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST) > 5) {
             Buffer buffer = getBuffer(player, true);
             long currentTime = System.currentTimeMillis();
             buffer.put("effectTime", currentTime);

@@ -1,6 +1,7 @@
 package me.vekster.lightanticheat;
 
 import me.vekster.lightanticheat.check.Check;
+import me.vekster.lightanticheat.check.CheckName;
 import me.vekster.lightanticheat.check.buffer.Buffer;
 import me.vekster.lightanticheat.check.checks.combat.autoclicker.AutoClickerA;
 import me.vekster.lightanticheat.check.checks.combat.autoclicker.AutoClickerB;
@@ -64,9 +65,13 @@ import me.vekster.lightanticheat.util.player.cps.CPSListener;
 import me.vekster.lightanticheat.util.tps.TPSCalculator;
 import me.vekster.lightanticheat.util.updater.Updater;
 import me.vekster.lightanticheat.util.violation.ViolationHandler;
+import me.vekster.lightanticheat.version.identifier.VerIdentifier;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 public class Main extends JavaPlugin {
 
@@ -75,12 +80,20 @@ public class Main extends JavaPlugin {
     private static final long BUFFER_DURATION_MILS = 20 * 1000L;
     private static final int PLUGIN_ID = 112053;
     private static final int STATS_ID = 12841;
+    private final Set<CheckName> registeredCheckNames = EnumSet.noneOf(CheckName.class);
+    private boolean bulkRegistering;
 
     @Override
     public void onEnable() {
         instance = this;
         FoliaUtil.loadFoliaUtil();
         ConfigManager.loadConfig();
+
+        int[] mcVersion = VerIdentifier.getMinecraftVersion();
+        getLogger().info("Detected Minecraft version: " + mcVersion[0] + "." + mcVersion[1] + "." + mcVersion[2]);
+        if (FoliaUtil.isFolia() && !VerIdentifier.isAtLeastMinecraft(1, 21, 11)) {
+            getLogger().warning("Folia detected below 1.21.11; best compatibility tuning is validated for Folia 1.21.11+");
+        }
 
         Buffer.loadBufferCleaner(BUFFER_DURATION_MILS);
         TPSCalculator.loadTPSCalculator();
@@ -116,65 +129,69 @@ public class Main extends JavaPlugin {
         Updater.loadUpdateChecker();
         registerListener(new Updater());
 
-        registerCheckListener(new FlightA());
-        registerCheckListener(new FlightB());
-        registerCheckListener(new FlightC());
-        registerCheckListener(new FlightC());
-        registerCheckListener(new LiquidWalkA());
-        registerCheckListener(new LiquidWalkB());
-        registerCheckListener(new JumpA());
-        registerCheckListener(new JumpB());
-        registerCheckListener(new ElytraA());
-        registerCheckListener(new ElytraB());
-        registerCheckListener(new ElytraC());
-        registerCheckListener(new FastClimbA());
-        registerCheckListener(new NoFallA());
-        registerCheckListener(new NoFallB());
-        registerCheckListener(new NoSlowA());
-        registerCheckListener(new SpeedA());
-        registerCheckListener(new SpeedB());
-        registerCheckListener(new SpeedD());
-        registerCheckListener(new SpeedE());
-        registerCheckListener(new SpeedE());
-        registerCheckListener(new SpeedF());
-        registerCheckListener(new SpeedC());
-        registerCheckListener(new StepA());
-        registerCheckListener(new TridentA());
-        registerCheckListener(new BoatA());
-        registerCheckListener(new VehicleA());
-        registerCheckListener(new KillAuraA());
-        registerCheckListener(new KillAuraB());
-        registerCheckListener(new KillAuraC());
-        registerCheckListener(new KillAuraD());
-        registerCheckListener(new ReachA());
-        registerCheckListener(new ReachB());
-        registerCheckListener(new CriticalsA());
-        registerCheckListener(new CriticalsB());
-        registerCheckListener(new AutoClickerA());
-        registerCheckListener(new AutoClickerB());
-        registerCheckListener(new VelocityA());
-        registerCheckListener(new AirPlaceA());
-        registerCheckListener(new FastPlaceA());
-        registerCheckListener(new BlockPlaceA());
-        registerCheckListener(new BlockPlaceB());
-        registerCheckListener(new GhostBreakA());
-        registerCheckListener(new FastBreakA());
-        registerCheckListener(new BlockBreakA());
-        registerCheckListener(new BlockBreakB());
-        registerCheckListener(new ScaffoldA());
-        registerCheckListener(new ScaffoldB());
-        registerCheckListener(new SortingA());
-        registerCheckListener(new ItemSwapA());
-        registerCheckListener(new MorePacketsA());
-        registerCheckListener(new MorePacketsB());
-        registerCheckListener(new TimerA());
-        registerCheckListener(new TimerB());
-        registerCheckListener(new BadPacketsA());
-        registerCheckListener(new BadPacketsB());
-        registerCheckListener(new BadPacketsC());
-        registerCheckListener(new BadPacketsD());
-        registerCheckListener(new AutoBotA());
-        registerCheckListener(new SkinBlinkerA());
+        registeredCheckNames.clear();
+        bulkRegistering = true;
+        try {
+            registerCheckListener(new FlightA());
+            registerCheckListener(new FlightB());
+            registerCheckListener(new FlightC());
+            registerCheckListener(new LiquidWalkA());
+            registerCheckListener(new LiquidWalkB());
+            registerCheckListener(new JumpA());
+            registerCheckListener(new JumpB());
+            registerCheckListener(new ElytraA());
+            registerCheckListener(new ElytraB());
+            registerCheckListener(new ElytraC());
+            registerCheckListener(new FastClimbA());
+            registerCheckListener(new NoFallA());
+            registerCheckListener(new NoFallB());
+            registerCheckListener(new NoSlowA());
+            registerCheckListener(new SpeedA());
+            registerCheckListener(new SpeedB());
+            registerCheckListener(new SpeedD());
+            registerCheckListener(new SpeedE());
+            registerCheckListener(new SpeedF());
+            registerCheckListener(new SpeedC());
+            registerCheckListener(new StepA());
+            registerCheckListener(new TridentA());
+            registerCheckListener(new BoatA());
+            registerCheckListener(new VehicleA());
+            registerCheckListener(new KillAuraA());
+            registerCheckListener(new KillAuraB());
+            registerCheckListener(new KillAuraC());
+            registerCheckListener(new KillAuraD());
+            registerCheckListener(new ReachA());
+            registerCheckListener(new ReachB());
+            registerCheckListener(new CriticalsA());
+            registerCheckListener(new CriticalsB());
+            registerCheckListener(new AutoClickerA());
+            registerCheckListener(new AutoClickerB());
+            registerCheckListener(new VelocityA());
+            registerCheckListener(new AirPlaceA());
+            registerCheckListener(new FastPlaceA());
+            registerCheckListener(new BlockPlaceA());
+            registerCheckListener(new BlockPlaceB());
+            registerCheckListener(new GhostBreakA());
+            registerCheckListener(new FastBreakA());
+            registerCheckListener(new BlockBreakA());
+            registerCheckListener(new BlockBreakB());
+            registerCheckListener(new ScaffoldA());
+            registerCheckListener(new ScaffoldB());
+            registerCheckListener(new SortingA());
+            registerCheckListener(new ItemSwapA());
+            registerCheckListener(new MorePacketsA());
+            registerCheckListener(new MorePacketsB());
+            registerCheckListener(new TimerA());
+            registerCheckListener(new TimerB());
+            registerCheckListener(new BadPacketsA());
+            registerCheckListener(new BadPacketsB());
+            registerCheckListener(new BadPacketsC());
+            registerCheckListener(new BadPacketsD());
+            registerCheckListener(new AutoBotA());
+            registerCheckListener(new SkinBlinkerA());
+        } finally {
+            bulkRegistering = false;
+        }
     }
 
     @Override
@@ -203,8 +220,14 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    private void registerCheckListener(Object object) {
-        Check.registerListener(((Check) object).getCheckSetting().name, (Listener) object);
+    private <T extends Check & Listener> void registerCheckListener(T checkListener) {
+        CheckName checkName = checkListener.getCheckSetting().name;
+        if (bulkRegistering && !registeredCheckNames.add(checkName)) {
+            getLogger().warning("Skipped duplicate check registration: " + checkName.name() +
+                    " (" + checkListener.getClass().getSimpleName() + ")");
+            return;
+        }
+        Check.registerListener(checkName, checkListener);
     }
 
 }

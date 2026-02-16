@@ -3,6 +3,7 @@ package me.vekster.lightanticheat.event.playerplaceblock;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -14,6 +15,11 @@ public class LACAsyncPlayerPlaceBlockEvent extends Event {
     private Player player;
     private LACPlayer lacPlayer;
     private Block block;
+    private String blockWorld;
+    private int blockX;
+    private int blockY;
+    private int blockZ;
+    private Material blockType;
     private Block blockAgainst;
     private BlockState blockReplacedState;
     private Location location;
@@ -25,6 +31,11 @@ public class LACAsyncPlayerPlaceBlockEvent extends Event {
         this.player = event.getPlayer();
         this.lacPlayer = event.getLacPlayer();
         this.block = event.getBlock();
+        this.blockWorld = event.getBlock().getWorld().getName();
+        this.blockX = event.getBlock().getX();
+        this.blockY = event.getBlock().getY();
+        this.blockZ = event.getBlock().getZ();
+        this.blockType = event.getBlock().getType();
         this.blockAgainst = event.getBlockAgainst();
         this.blockReplacedState = event.getBlockReplacedState();
         this.location = event.getPlayer().getLocation().clone();
@@ -39,8 +50,32 @@ public class LACAsyncPlayerPlaceBlockEvent extends Event {
         return lacPlayer;
     }
 
+    /**
+     * @deprecated Unsafe on Folia async handlers. Use primitive snapshot getters instead.
+     */
+    @Deprecated
     public Block getBlock() {
         return block;
+    }
+
+    public String getBlockWorld() {
+        return blockWorld;
+    }
+
+    public int getBlockX() {
+        return blockX;
+    }
+
+    public int getBlockY() {
+        return blockY;
+    }
+
+    public int getBlockZ() {
+        return blockZ;
+    }
+
+    public Material getBlockType() {
+        return blockType;
     }
 
     public Block getBlockAgainst() {

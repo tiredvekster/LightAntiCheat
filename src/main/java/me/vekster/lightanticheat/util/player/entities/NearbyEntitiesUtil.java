@@ -8,6 +8,7 @@ import me.vekster.lightanticheat.util.hook.server.paper.PaperUtil;
 import me.vekster.lightanticheat.util.scheduler.Scheduler;
 import me.vekster.lightanticheat.version.identifier.LACVersion;
 import me.vekster.lightanticheat.version.identifier.VerIdentifier;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -19,7 +20,20 @@ import java.util.concurrent.*;
 public class NearbyEntitiesUtil {
 
     public static Set<Entity> getAllEntitiesAsyncWithoutCache(Player player) {
+        if (FoliaUtil.isFolia() && !FoliaUtil.isOwnedByCurrentRegion(player))
+            return ConcurrentHashMap.newKeySet();
+
         if ((VerIdentifier.getVersion().isOlderOrEqualsTo(LACVersion.V1_8) || !PaperUtil.isPaper()) && !FoliaUtil.isFolia()) {
+            if (Bukkit.isPrimaryThread()) {
+                try {
+                    Set<Entity> result = ConcurrentHashMap.newKeySet();
+                    result.addAll(player.getNearbyEntities(16, 24, 16));
+                    return result;
+                } catch (IllegalStateException exception) {
+                    return ConcurrentHashMap.newKeySet();
+                }
+            }
+
             CompletableFuture<List<Entity>> future = new CompletableFuture<>();
             Scheduler.runTask(true, () -> {
                 try {
@@ -37,17 +51,22 @@ public class NearbyEntitiesUtil {
             }
         }
 
-        Location location = player.getLocation();
+        Location baseLocation = player.getLocation();
         Set<Entity> result = ConcurrentHashMap.newKeySet();
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 try {
-                    Location chunkLocation = location.add(x * 16, 0, z * 16);
+                    Location chunkLocation = baseLocation.clone().add(x * 16, 0, z * 16);
                     Entity[] entities;
                     World world = AsyncUtil.getWorld(chunkLocation);
                     if (world == null) world = chunkLocation.getWorld();
-                    if (world.isChunkLoaded(chunkLocation.getBlockX() >> 4, chunkLocation.getBlockZ() >> 4)) {
-                        entities = world.getChunkAt(chunkLocation).getEntities();
+                    int chunkX = chunkLocation.getBlockX() >> 4;
+                    int chunkZ = chunkLocation.getBlockZ() >> 4;
+                    if (FoliaUtil.isFolia() && !FoliaUtil.isOwnedByCurrentRegion(world, chunkX, chunkZ)) {
+                        continue;
+                    }
+                    if (world.isChunkLoaded(chunkX, chunkZ)) {
+                        entities = world.getChunkAt(chunkX, chunkZ).getEntities();
                     } else {
                         continue;
                     }
@@ -66,11 +85,19 @@ public class NearbyEntitiesUtil {
 
     public static Set<CachedEntity> selectNearbyEntities(Player player, Set<Entity> entities, EntityDistance type) {
         Set<CachedEntity> result = ConcurrentHashMap.newKeySet();
+        if (FoliaUtil.isFolia() && !FoliaUtil.isOwnedByCurrentRegion(player))
+            return result;
+
         Location location = player.getLocation();
         double x = location.getX();
         double y = location.getY();
         double z = location.getZ();
         for (Entity entity : entities) {
+            if (entity == null)
+                continue;
+            if (FoliaUtil.isFolia() && !FoliaUtil.isOwnedByCurrentRegion(entity))
+                continue;
+
             Location entityLocation = entity.getLocation();
             double entityX = entityLocation.getX();
             double entityY = entityLocation.getY();

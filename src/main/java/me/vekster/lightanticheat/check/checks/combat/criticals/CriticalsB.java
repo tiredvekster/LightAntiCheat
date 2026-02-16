@@ -37,6 +37,8 @@ public class CriticalsB extends CombatCheck implements Listener {
 
     @EventHandler
     public void onAsyncHit(LACAsyncPlayerAttackEvent event) {
+        if (event.hasDamageCause() && !event.isEntityAttackCause())
+            return;
         LACPlayer lacPlayer = event.getLacPlayer();
         PlayerCache cache = lacPlayer.cache;
         Player player = event.getPlayer();
@@ -52,6 +54,8 @@ public class CriticalsB extends CombatCheck implements Listener {
                 cache.glidingTicks >= -3 || cache.riptidingTicks >= -3)
             return;
         long time = System.currentTimeMillis();
+        if (hasRecentMobilityContext(cache, lacPlayer, time, 800, 1300, 1000, 1700, 1400, 2400))
+            return;
         if (time - cache.lastInsideVehicle <= 150 || time - cache.lastInWater <= 150 ||
                 time - cache.lastWasFished <= 4000 || time - cache.lastTeleport <= 700 ||
                 time - cache.lastRespawn <= 500 || time - cache.lastEntityVeryNearby <= 500 ||
@@ -121,17 +125,17 @@ public class CriticalsB extends CombatCheck implements Listener {
             return;
 
         Set<Integer> minHeights = ConcurrentHashMap.newKeySet();
-        Scheduler.runTaskLater(() -> {
+        Scheduler.runTaskLater(player, () -> {
             if (!player.isOnline() || LACPlayer.getLacPlayer(player) == null)
                 return;
             minHeights.add(getMinDownHeight(getDownBlocks(player, 0.1), true));
 
-            Scheduler.runTaskLater(() -> {
+            Scheduler.runTaskLater(player, () -> {
                 if (!player.isOnline() || LACPlayer.getLacPlayer(player) == null)
                     return;
                 minHeights.add(getMinDownHeight(getDownBlocks(player, 0.1), true));
 
-                Scheduler.runTaskLater(() -> {
+                Scheduler.runTaskLater(player, () -> {
                     if (!player.isOnline() || LACPlayer.getLacPlayer(player) == null)
                         return;
                     minHeights.add(getMinDownHeight(getDownBlocks(player, 0.1), true));
@@ -144,9 +148,9 @@ public class CriticalsB extends CombatCheck implements Listener {
                     Scheduler.runTask(true, () -> {
                         callViolationEvent(player, lacPlayer, null);
                     });
-                }, 1);
-            }, 1);
-        }, 1);
+                });
+            });
+        });
     }
 
     @EventHandler(priority = EventPriority.LOW)

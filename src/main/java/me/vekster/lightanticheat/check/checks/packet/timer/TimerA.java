@@ -18,6 +18,17 @@ import org.bukkit.event.Listener;
  * Timer hack
  */
 public class TimerA extends PacketCheck implements Listener {
+
+    private static boolean hasRecent121TimerImpulse(LACPlayer lacPlayer, long currentTime) {
+        int windChargeWindow = 3000;
+        int windChargeReceiveWindow = 1000;
+        if (VerIdentifier.isAtLeastMinecraft(1, 21, 11)) {
+            windChargeWindow += 500;
+            windChargeReceiveWindow += 350;
+        }
+        return currentTime - lacPlayer.cache.lastWindCharge < windChargeWindow ||
+                currentTime - lacPlayer.cache.lastWindChargeReceive < windChargeReceiveWindow;
+    }
     public TimerA() {
         super(CheckName.TIMER_A);
     }
@@ -51,8 +62,7 @@ public class TimerA extends PacketCheck implements Listener {
                 return;
         }
 
-        if (System.currentTimeMillis() - lacPlayer.cache.lastWindCharge < 3000 ||
-                System.currentTimeMillis() - lacPlayer.cache.lastWindChargeReceive < 1000) {
+        if (hasRecent121TimerImpulse(lacPlayer, currentTime)) {
             buffer.put("skipVehiclePacket", !buffer.getBoolean("skipVehiclePacket"));
             if (!buffer.getBoolean("skipVehiclePacket"))
                 return;

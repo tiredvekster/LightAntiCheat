@@ -6,7 +6,7 @@ LightAntiCheat is happy that you want to contribute to the project! We are alway
 
 ## Requirements
 To get started PRing changes you will need to have the following installed/condition met:
-- Java 8 JDK or later (21 is recommented because your changes have to work on EVERY version)
+- Java 21 JDK (required to build); plugin bytecode remains Java 8-compatible for legacy servers
 - Git (obviously)
 - Hardware capable of running a Minecraft server with Paper, Spigot, Folia on different versions
 
@@ -19,7 +19,7 @@ To get started PRing changes you will need to have the following installed/condi
 1. Fork the repository
 2. Create a new branch with a descriptive name
 3. Make your changes
-4. Test your changes on every version of Minecraft that we support (Or cover most of them such as 1.8, 1.9, 1.12, 1.21)
+4. Test your changes on every version of Minecraft that we support (Or cover most of them such as 1.8, 1.9, 1.12, 1.21.11)
 5. Push your changes to your fork, include **[ci-skip]** if your commit only contains documentation but not actual code
 6. Create a pull request
 7. Relax 😎

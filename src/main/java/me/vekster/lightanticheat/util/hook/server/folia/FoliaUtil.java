@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +18,10 @@ public class FoliaUtil {
     private static boolean folia;
     private static FoliaLib foliaLib;
     private static Map<UUID, List<FLocation>> players = new ConcurrentHashMap<>();
+    private static volatile Method isOwnedByCurrentRegionMethod;
+    private static volatile boolean isOwnedMethodInitialized;
+    private static volatile Method isOwnedChunkMethod;
+    private static volatile boolean isOwnedChunkInitialized;
 
     public static void loadFoliaUtil() {
         try {
@@ -79,6 +84,71 @@ public class FoliaUtil {
             prevFLoc = fLocation;
         }
         return true;
+    }
+
+
+    public static boolean isOwnedByCurrentRegion(Entity entity) {
+        if (!isFolia())
+            return true;
+        if (entity == null)
+            return false;
+
+        Method method = isOwnedByCurrentRegionMethod;
+        if (!isOwnedMethodInitialized) {
+            synchronized (FoliaUtil.class) {
+                if (!isOwnedMethodInitialized) {
+                    try {
+                        method = Bukkit.class.getMethod("isOwnedByCurrentRegion", Entity.class);
+                    } catch (NoSuchMethodException ignored) {
+                        method = null;
+                    }
+                    isOwnedByCurrentRegionMethod = method;
+                    isOwnedMethodInitialized = true;
+                }
+            }
+        }
+
+        if (method == null)
+            return false;
+
+        try {
+            Object result = method.invoke(null, entity);
+            return result instanceof Boolean && (boolean) result;
+        } catch (ReflectiveOperationException ignored) {
+            return false;
+        }
+    }
+
+    public static boolean isOwnedByCurrentRegion(World world, int chunkX, int chunkZ) {
+        if (!isFolia())
+            return true;
+        if (world == null)
+            return false;
+
+        Method method = isOwnedChunkMethod;
+        if (!isOwnedChunkInitialized) {
+            synchronized (FoliaUtil.class) {
+                if (!isOwnedChunkInitialized) {
+                    try {
+                        method = Bukkit.class.getMethod("isOwnedByCurrentRegion", World.class, int.class, int.class);
+                    } catch (NoSuchMethodException ignored) {
+                        method = null;
+                    }
+                    isOwnedChunkMethod = method;
+                    isOwnedChunkInitialized = true;
+                }
+            }
+        }
+
+        if (method == null)
+            return false;
+
+        try {
+            Object result = method.invoke(null, world, chunkX, chunkZ);
+            return result instanceof Boolean && (boolean) result;
+        } catch (ReflectiveOperationException ignored) {
+            return false;
+        }
     }
 
     public static void runTask(Runnable runnable) {

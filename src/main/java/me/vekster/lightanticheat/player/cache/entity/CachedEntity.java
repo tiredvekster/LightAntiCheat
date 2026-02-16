@@ -1,5 +1,6 @@
 package me.vekster.lightanticheat.player.cache.entity;
 
+import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.version.VerUtil;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -11,8 +12,16 @@ public class CachedEntity {
     public CachedEntity(Entity entity) {
         uuid = entity.getUniqueId();
         entityType = entity.getType();
-        width = VerUtil.getWidth(entity);
-        height = VerUtil.getHeight(entity);
+
+        double cachedWidth = -1;
+        double cachedHeight = -1;
+        if (!FoliaUtil.isFolia() || FoliaUtil.isOwnedByCurrentRegion(entity)) {
+            cachedWidth = VerUtil.getWidth(entity);
+            cachedHeight = VerUtil.getHeight(entity);
+        }
+
+        width = cachedWidth;
+        height = cachedHeight;
     }
 
     public final UUID uuid;

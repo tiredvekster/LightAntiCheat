@@ -42,6 +42,7 @@ public class ElytraC extends MovementCheck implements Listener {
         if (cache.flyingTicks >= -5 || cache.climbingTicks >= -2 || cache.glidingTicks <= 3)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 600);
         return time - cache.lastInsideVehicle > 150 && time - cache.lastInWater > 150 &&
                 time - cache.lastKnockback > 750 && time - cache.lastKnockbackNotVanilla > 3000 &&
                 time - cache.lastWasFished > 4000 && time - cache.lastTeleport > 500 &&
@@ -54,7 +55,10 @@ public class ElytraC extends MovementCheck implements Listener {
                 time - cache.lastWasHit > 350 && time - cache.lastWasDamaged > 150 &&
                 time - cache.lastKbVelocity > 500 && time - cache.lastAirKbVelocity > 1000 &&
                 time - cache.lastStrongKbVelocity > 2500 && time - cache.lastStrongAirKbVelocity > 5000 &&
-                time - cache.lastFlight > 750;
+                time - cache.lastFlight > 750 &&
+                !hasRecent121MobilityBoost(cache, time, true) &&
+                !hasRecentMobilityContext(cache, lacPlayer, time, 900, 1500, 1200, 2000, 1600, 2600) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -66,20 +70,20 @@ public class ElytraC extends MovementCheck implements Listener {
 
         if (!isCheckAllowed(player, lacPlayer, true)) {
             buffer.put("glidingEvents", 0);
+            buffer.put("elytraFlags", 0);
             return;
         }
 
         if (!isConditionAllowed(player, lacPlayer, event)) {
             buffer.put("glidingEvents", 0);
+            buffer.put("elytraFlags", 0);
             return;
         }
 
-        if (!event.isToWithinBlocksPassable() || !event.isFromWithinBlocksPassable()) {
+        int ping = lacPlayer.getPing();
+        if (cache.glidingTicks <= 14) {
             buffer.put("glidingEvents", 0);
-            return;
-        }
-        if (!event.isToDownBlocksPassable() || !event.isFromDownBlocksPassable()) {
-            buffer.put("glidingEvents", 0);
+            buffer.put("elytraFlags", 0);
             return;
         }
 
@@ -90,30 +94,9 @@ public class ElytraC extends MovementCheck implements Listener {
         long currentTime = System.currentTimeMillis();
         if (currentTime - buffer.getLong("effectTime") < 1000) {
             buffer.put("glidingEvents", 0);
+            buffer.put("elytraFlags", 0);
             return;
         }
-
-        if (event.getFrom().getBlockY() > event.getTo().getBlockY() ||
-                event.getFrom().getY() > event.getTo().getY() && event.getTo().getY() % 1.0 == 0) {
-            for (Block block : event.getToDownBlocks()) {
-                Block downBlock = block.getRelative(BlockFace.DOWN);
-                if (!isActuallyPassable(downBlock)) {
-                    buffer.put("glidingEvents", 0);
-                    return;
-                }
-            }
-        }
-
-        Set<Block> interactiveBlocks = new HashSet<>();
-        getInteractiveBlocks(player, event.getTo()).forEach(block -> {
-            interactiveBlocks.add(block);
-            interactiveBlocks.add(block.getRelative(BlockFace.UP));
-        });
-        for (Block block : interactiveBlocks)
-            if (!isActuallyPassable(block)) {
-                buffer.put("glidingEvents", 0);
-                return;
-            }
 
         buffer.put("glidingEvents", buffer.getInt("glidingEvents") + 1);
         if (buffer.getInt("glidingEvents") <= 1)
@@ -127,10 +110,55 @@ public class ElytraC extends MovementCheck implements Listener {
         double horizontalSpeed = distanceHorizontal(event.getFrom(), event.getTo());
         double averageHorizontalSpeed = distanceHorizontal(cache.history.onEvent.location.get(HistoryElement.FIRST), event.getTo()) / 2.0;
 
-        if (Math.min(horizontalSpeed, averageHorizontalSpeed) < Math.max(maxTickSpeed, maxEventSpeed) * 1.6 + 0.35)
+        double pingAllowance = Math.min(Math.max((ping - 120) / 240.0, 0.0), 0.35);
+        if (Math.min(horizontalSpeed, averageHorizontalSpeed) < Math.max(maxTickSpeed, maxEventSpeed) * (1.6 + pingAllowance) + 0.35 + pingAllowance)
             return;
 
+        if (!event.isToWithinBlocksPassable() || !event.isFromWithinBlocksPassable()) {
+            buffer.put("glidingEvents", 0);
+            buffer.put("elytraFlags", 0);
+            return;
+        }
+        if (!event.isToDownBlocksPassable() || !event.isFromDownBlocksPassable()) {
+            buffer.put("glidingEvents", 0);
+            buffer.put("elytraFlags", 0);
+            return;
+        }
+
+        if (event.getFrom().getBlockY() > event.getTo().getBlockY() ||
+                event.getFrom().getY() > event.getTo().getY() && event.getTo().getY() % 1.0 == 0) {
+            for (Block block : event.getToDownBlocks()) {
+                Block downBlock = block.getRelative(BlockFace.DOWN);
+                if (!isActuallyPassable(downBlock)) {
+                    buffer.put("glidingEvents", 0);
+                    buffer.put("elytraFlags", 0);
+                    return;
+                }
+            }
+        }
+
+        Set<Block> interactiveBlocks = new HashSet<>();
+        getInteractiveBlocks(player, event.getTo()).forEach(block -> {
+            interactiveBlocks.add(block);
+            interactiveBlocks.add(block.getRelative(BlockFace.UP));
+        });
+        for (Block block : interactiveBlocks)
+            if (!isActuallyPassable(block)) {
+                buffer.put("glidingEvents", 0);
+                buffer.put("elytraFlags", 0);
+                return;
+            }
+
+        long now = System.currentTimeMillis();
+        if (now - buffer.getLong("lastElytraSync") < 350L)
+            return;
+        buffer.put("lastElytraSync", now);
+
         Scheduler.runTask(true, () -> {
+            buffer.put("elytraFlags", buffer.getInt("elytraFlags") + 1);
+            int requiredElytraFlags = getConnectionBufferRequirement(lacPlayer, 1);
+            if (buffer.getInt("elytraFlags") <= requiredElytraFlags)
+                return;
             callViolationEventIfRepeat(player, lacPlayer, event, buffer, Main.getBufferDurationMils() - 1000L);
         });
     }

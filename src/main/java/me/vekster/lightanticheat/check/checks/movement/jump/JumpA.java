@@ -40,6 +40,7 @@ public class JumpA extends MovementCheck implements Listener {
                 cache.glidingTicks >= -6 || cache.riptidingTicks >= -10)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 300 && time - cache.lastInWater > 300 &&
                 time - cache.lastKnockback > 750 && time - cache.lastKnockbackNotVanilla > 3000 &&
                 time - cache.lastWasFished > 5000 && time - cache.lastTeleport > 700 &&
@@ -51,8 +52,9 @@ public class JumpA extends MovementCheck implements Listener {
                 time - cache.lastWasHit > 350 && time - cache.lastWasDamaged > 150 &&
                 time - cache.lastStrongKbVelocity > 5000 && time - cache.lastStrongAirKbVelocity > 10 * 1000 &&
                 time - cache.lastFlight > 1200 &&
-                time - cache.lastWindCharge > 1000 && time - cache.lastWindChargeReceive > 500 &&
-                time - cache.lastWindBurst > 1500 && time - cache.lastWindBurstNotVanilla > 4000;
+                !hasRecent121MobilityBoost(cache, time, true) &&
+                !hasRecentMobilityContext(cache, lacPlayer, time, 900, 1500, 1200, 2000, 1600, 2600) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -139,20 +141,20 @@ public class JumpA extends MovementCheck implements Listener {
             return false;
 
         if (getEffectAmplifier(cache, PotionEffectType.LEVITATION) > 0 ||
-                getEffectAmplifier(cache, PotionEffectType.JUMP) > 2)
+                getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) > 2)
             return false;
 
         double velocity = player.getVelocity().getY();
         double vSpeed = distanceVertical(from, to);
-        if (getEffectAmplifier(cache, PotionEffectType.JUMP) == 0) {
+        if (getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) == 0) {
             if (!(velocity < 0.42 * 1.1 && vSpeed > 0.42 * 1.35 ||
                     vSpeed > 0.42 * 2.55))
                 return false;
-        } else if (getEffectAmplifier(cache, PotionEffectType.JUMP) == 1) {
+        } else if (getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) == 1) {
             if (!(velocity < 0.52 * 1.1 && vSpeed > 0.52 * 1.35 ||
                     vSpeed > 0.52 * 2.55))
                 return false;
-        } else if (getEffectAmplifier(cache, PotionEffectType.JUMP) == 2) {
+        } else if (getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) == 2) {
             if (!(velocity < 0.621 * 1.1 && vSpeed > 0.621 * 1.35 ||
                     vSpeed > 0.621 * 2.55))
                 return false;
@@ -177,18 +179,18 @@ public class JumpA extends MovementCheck implements Listener {
             return false;
 
         if (getEffectAmplifier(cache, VerUtil.potions.get("LEVITATION")) > 0 ||
-                getEffectAmplifier(cache, PotionEffectType.JUMP) > 2)
+                getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) > 2)
             return false;
 
         double velocity = player.getVelocity().getY();
         double vSpeed = distanceVertical(from, to);
-        if (getEffectAmplifier(cache, PotionEffectType.JUMP) == 0) {
+        if (getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) == 0) {
             if (!(velocity < 0.42 * 1.05 && vSpeed > 0.42 * 1.9))
                 return false;
-        } else if (getEffectAmplifier(cache, PotionEffectType.JUMP) == 1) {
+        } else if (getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) == 1) {
             if (!(velocity < 0.52 * 1.05 && vSpeed > 0.52 * 1.9))
                 return false;
-        } else if (getEffectAmplifier(cache, PotionEffectType.JUMP) == 2) {
+        } else if (getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) == 2) {
             if (!(velocity < 0.621 * 1.05 && vSpeed > 0.621 * 1.9))
                 return false;
         }

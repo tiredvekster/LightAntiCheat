@@ -49,6 +49,7 @@ public class SpeedC extends MovementCheck implements Listener {
                 cache.glidingTicks >= -7 || cache.riptidingTicks >= -8)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 500);
         return time - cache.lastInsideVehicle > 200 && time - cache.lastInWater > 200 &&
                 time - cache.lastKnockback > 1700 && time - cache.lastKnockbackNotVanilla > 6000 &&
                 time - cache.lastWasFished > 4000 && time - cache.lastTeleport > 1000 &&
@@ -61,8 +62,8 @@ public class SpeedC extends MovementCheck implements Listener {
                 time - cache.lastStrongKbVelocity > 5000 && time - cache.lastStrongAirKbVelocity > 15 * 1000 &&
                 time - cache.lastFlight > 1000 &&
                 time - cache.lastGliding > 2000 && time - cache.lastRiptiding > 3500 &&
-                time - cache.lastWindCharge > 1000 && time - cache.lastWindChargeReceive > 1000 &&
-                time - cache.lastWindBurst > 500 && time - cache.lastWindBurstNotVanilla > 1000;
+                !hasRecent121MobilityBoost(cache, time, 1000, 1000, 500, 1000) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -74,6 +75,7 @@ public class SpeedC extends MovementCheck implements Listener {
 
         if (!isCheckAllowed(player, lacPlayer, true)) {
             buffer.put("speedTicks", 0);
+            buffer.put("flags", 0);
             return;
         }
 
@@ -87,24 +89,29 @@ public class SpeedC extends MovementCheck implements Listener {
 
         if (!isConditionAllowed(player, lacPlayer, event)) {
             buffer.put("speedTicks", 0);
+            buffer.put("flags", 0);
             return;
         }
 
         long currentTime = System.currentTimeMillis();
         if (currentTime - buffer.getLong("effectTime") <= 2500) {
             buffer.put("speedTicks", 0);
+            buffer.put("flags", 0);
             return;
         }
         if (currentTime - buffer.getLong("impassableTime") < 700) {
             buffer.put("speedTicks", 0);
+            buffer.put("flags", 0);
             return;
         }
         if (currentTime - buffer.getLong("iceTime") < 2000) {
             buffer.put("speedTicks", 0);
+            buffer.put("flags", 0);
             return;
         }
         if (currentTime - buffer.getLong("soulSpeedTime") < 2000) {
             buffer.put("speedTicks", 0);
+            buffer.put("flags", 0);
             return;
         }
 
@@ -155,8 +162,11 @@ public class SpeedC extends MovementCheck implements Listener {
 
 
         buffer.put("flags", buffer.getInt("flags") + 1);
-        if (buffer.getInt("flags") <= 2 && currentTime - lacPlayer.cache.lastEntityNearby > 1000 ||
-                buffer.getInt("flags") <= 3)
+        int requiredFlags = getConnectionBufferRequirement(lacPlayer, 3);
+        long timeSinceEntityNearby = currentTime - lacPlayer.cache.lastEntityNearby;
+        if (timeSinceEntityNearby <= 1000)
+            requiredFlags += 1;
+        if (buffer.getInt("flags") <= requiredFlags)
             return;
 
         Set<Player> players = getPlayersForEnchantsSquared(lacPlayer, player);

@@ -50,6 +50,7 @@ public class FlightB extends MovementCheck implements Listener {
                 cache.glidingTicks >= -3 || cache.riptidingTicks >= -5)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 150 && time - cache.lastInWater > 150 &&
                 time - cache.lastKnockback > 750 && time - cache.lastKnockbackNotVanilla > 3000 &&
                 time - cache.lastWasFished > 4000 && time - cache.lastTeleport > 700 &&
@@ -63,8 +64,9 @@ public class FlightB extends MovementCheck implements Listener {
                 time - cache.lastStrongKbVelocity > 5000 && time - cache.lastStrongAirKbVelocity > 15 * 1000 &&
                 time - cache.lastFlight > 750 &&
                 time - cache.lastGliding > 2000 && time - cache.lastRiptiding > 3500 &&
-                time - cache.lastWindCharge > 1000 && time - cache.lastWindChargeReceive > 500 &&
-                time - cache.lastWindBurst > 1500 && time - cache.lastWindBurstNotVanilla > 4000;
+                !hasRecent121MobilityBoost(cache, time, true) &&
+                !hasRecentMobilityContext(cache, lacPlayer, time, 900, 1500, 1200, 2000, 1600, 2600) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -192,7 +194,7 @@ public class FlightB extends MovementCheck implements Listener {
             }
         }
 
-        if (getEffectAmplifier(cache, PotionEffectType.JUMP) == 0 &&
+        if (getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) == 0 &&
                 currentTime - buffer.getLong("justEffectTime") < 100) {
             updateStartLocation(event.getTo(), false, 0.0, buffer);
             buffer.put("flightTicks", 0);
@@ -210,7 +212,7 @@ public class FlightB extends MovementCheck implements Listener {
         }
 
         double height = distanceVertical(buffer.getLocation("startLocation"), event.getTo());
-        int jumpEffectAmplifier = getEffectAmplifier(cache, PotionEffectType.JUMP);
+        int jumpEffectAmplifier = getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST);
         if (jumpEffectAmplifier > 2)
             height -= (jumpEffectAmplifier - 2) * 0.2;
         height = height * 0.9 - 0.1 - buffer.getInt("interactiveOffset");
@@ -303,10 +305,10 @@ public class FlightB extends MovementCheck implements Listener {
 
 
         if (getEffectAmplifier(lacPlayer.cache, VerUtil.potions.get("LEVITATION")) > 0 ||
-                getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP) > 32)
+                getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST) > 32)
             buffer.put("effectTime", System.currentTimeMillis());
 
-        if (getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP) != 0)
+        if (getEffectAmplifier(lacPlayer.cache, PotionEffectType.JUMP_BOOST) != 0)
             buffer.put("justEffectTime", System.currentTimeMillis());
     }
 

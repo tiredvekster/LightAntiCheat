@@ -4,6 +4,7 @@ import me.vekster.lightanticheat.util.hook.server.folia.FoliaUtil;
 import me.vekster.lightanticheat.util.scheduler.gamescheduler.BukkitScheduler;
 import me.vekster.lightanticheat.util.scheduler.gamescheduler.FoliaScheduler;
 import me.vekster.lightanticheat.util.scheduler.gamescheduler.GameScheduler;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -40,6 +41,10 @@ public class Scheduler {
         SCHEDULER.runTaskLater(entity, task, delayInTicks);
     }
 
+    public static void runTaskLater(Player player, Runnable task) {
+        SCHEDULER.runTaskLater(player, task, 1);
+    }
+
     public static void runTaskLaterAsynchronously(Runnable task, long delayInTicks) {
         SCHEDULER.runTaskLaterAsynchronously(task, delayInTicks);
     }
@@ -66,16 +71,30 @@ public class Scheduler {
 
     @SuppressWarnings("unchecked")
     public static <T> T entityThread(Player player, boolean force, T defaultValue, Supplier<Object> supplier) {
+        if (player == null || supplier == null)
+            return defaultValue;
+
+        if (!FoliaUtil.isFolia() || Bukkit.isPrimaryThread() || FoliaUtil.isOwnedByCurrentRegion(player)) {
+            Object result = supplier.get();
+            return result != null ? (T) result : defaultValue;
+        }
+
+        if (isTickThread())
+            return defaultValue;
+
         CompletableFuture<Object> future = new CompletableFuture<>();
-        entityThread(player, force, () -> {
-            future.complete(supplier.get());
-        });
+        entityThread(player, force, () -> future.complete(supplier.get()));
         try {
             Object result = future.get(500, TimeUnit.MILLISECONDS);
             return result != null ? (T) result : defaultValue;
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             return defaultValue;
         }
+    }
+
+    private static boolean isTickThread() {
+        String name = Thread.currentThread().getName();
+        return name != null && (name.contains("Region Scheduler Thread") || name.equals("Server thread"));
     }
 
     public static void schedule(TimerTask task, long delayInMs) {

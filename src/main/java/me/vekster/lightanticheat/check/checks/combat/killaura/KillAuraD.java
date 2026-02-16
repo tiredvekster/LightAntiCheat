@@ -26,6 +26,8 @@ public class KillAuraD extends CombatCheck implements Listener {
 
     @EventHandler
     public void multiAuraAsync(LACAsyncPlayerAttackEvent event) {
+        if (event.hasDamageCause() && !event.isEntityAttackCause())
+            return;
         LACPlayer lacPlayer = event.getLacPlayer();
         Buffer buffer = getBuffer(event.getPlayer(), true);
         long currentTime = System.currentTimeMillis();
@@ -78,6 +80,8 @@ public class KillAuraD extends CombatCheck implements Listener {
 
     @EventHandler
     public void shieldAsync(LACAsyncPlayerAttackEvent event) {
+        if (event.hasDamageCause() && !event.isEntityAttackCause())
+            return;
         Player player = event.getPlayer();
         if (!player.isBlocking() && !player.isSleeping() && !player.isDead())
             return;

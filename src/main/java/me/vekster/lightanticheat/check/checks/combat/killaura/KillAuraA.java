@@ -26,6 +26,8 @@ public class KillAuraA extends CombatCheck implements Listener {
 
     @EventHandler
     public void onAsyncHit(LACAsyncPlayerAttackEvent event) {
+        if (event.hasDamageCause() && !event.isEntityAttackCause())
+            return;
         LACPlayer lacPlayer = event.getLacPlayer();
         PlayerCache cache = lacPlayer.cache;
         Player player = event.getPlayer();

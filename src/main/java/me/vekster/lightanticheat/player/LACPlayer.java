@@ -38,6 +38,10 @@ public class LACPlayer extends VerPlayer {
     public PlayerCooldown cooldown;
     public PlayerViolations violations;
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
     public static LACPlayer getLacPlayer(UUID uuid) {
         return PLAYERS.getOrDefault(uuid, null);
     }

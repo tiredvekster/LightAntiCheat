@@ -183,6 +183,20 @@ public class VelocityA extends CombatCheck implements Listener {
         }, 1);
     }
 
+    private static boolean hasRecent121CombatImpulse(PlayerCache cache, long time) {
+        int chargeReceiveWindow = 1000;
+        int burstWindow = 1750;
+        int burstNotVanillaWindow = 4500;
+        if (VerIdentifier.isAtLeastMinecraft(1, 21, 11)) {
+            chargeReceiveWindow += 350;
+            burstWindow += 500;
+            burstNotVanillaWindow += 1000;
+        }
+        return time - cache.lastWindChargeReceive <= chargeReceiveWindow ||
+                time - cache.lastWindBurst <= burstWindow ||
+                time - cache.lastWindBurstNotVanilla <= burstNotVanillaWindow;
+    }
+
     private static boolean isConditionAllowed(Player player, LACPlayer lacPlayer, PlayerCache cache) {
         for (Block block : getWithinBlocks(player)) {
             if (!isActuallyPassable(block) || !isActuallyPassable(block.getRelative(BlockFace.UP)))
@@ -218,6 +232,8 @@ public class VelocityA extends CombatCheck implements Listener {
                 time - cache.lastSlimeBlock <= 2000 || time - cache.lastHoneyBlock <= 1000 ||
                 time - cache.lastFlight <= 750 ||
                 time - cache.lastGliding <= 2000 || time - cache.lastRiptiding <= 3500)
+            return false;
+        if (hasRecent121CombatImpulse(cache, time))
             return false;
         return true;
     }

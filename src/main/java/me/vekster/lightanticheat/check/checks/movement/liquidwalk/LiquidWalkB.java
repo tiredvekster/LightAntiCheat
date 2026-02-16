@@ -30,6 +30,7 @@ public class LiquidWalkB extends MovementCheck implements Listener {
                 cache.glidingTicks >= -3 || cache.riptidingTicks >= -4)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 150 && time - cache.lastInWater > 150 &&
                 time - cache.lastKnockback > 250 && time - cache.lastKnockbackNotVanilla > 1000 &&
                 time - cache.lastWasFished > 1000 && time - cache.lastTeleport > 500 &&
@@ -38,7 +39,9 @@ public class LiquidWalkB extends MovementCheck implements Listener {
                 time - cache.lastSlimeBlockVertical > 3000 && time - cache.lastSlimeBlockHorizontal > 2500 &&
                 time - cache.lastHoneyBlockVertical > 3000 && time - cache.lastHoneyBlockHorizontal > 3000 &&
                 time - cache.lastWasHit > 150 && time - cache.lastWasDamaged > 50 &&
-                time - cache.lastFlight > 750;
+                time - cache.lastFlight > 750 &&
+                !hasRecent121MobilityBoost(cache, time, false) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler

@@ -8,9 +8,12 @@ import me.vekster.lightanticheat.event.playermove.LACPlayerMoveEvent;
 import me.vekster.lightanticheat.player.LACPlayer;
 import me.vekster.lightanticheat.player.cache.PlayerCache;
 import me.vekster.lightanticheat.util.cooldown.CooldownUtil;
+import me.vekster.lightanticheat.util.player.connectionstability.ConnectionStability;
+import me.vekster.lightanticheat.util.player.connectionstability.ConnectionStabilityListener;
 import me.vekster.lightanticheat.util.hook.plugin.simplehook.EnchantsSquaredHook;
 import me.vekster.lightanticheat.version.VerPlayer;
 import me.vekster.lightanticheat.version.VerUtil;
+import me.vekster.lightanticheat.version.identifier.VerIdentifier;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -46,6 +49,82 @@ public abstract class MovementCheck extends Check {
     }
 
 
+    private ConnectionStability getConnectionStabilitySafe(LACPlayer lacPlayer) {
+        try {
+            ConnectionStability stability = ConnectionStabilityListener.getConnectionStability(lacPlayer.getUuid());
+            return stability != null ? stability : ConnectionStability.HIGH;
+        } catch (RuntimeException | LinkageError ignored) {
+            return ConnectionStability.HIGH;
+        }
+    }
+
+
+    protected long getDynamicGraceWindow(LACPlayer lacPlayer, long baseWindow) {
+        int ping = Math.max(lacPlayer.getPing(true), 0);
+        long pingGrace = Math.max(0, ping - 120L);
+
+        ConnectionStability stability = getConnectionStabilitySafe(lacPlayer);
+        long jitterGrace = 0;
+        if (stability == ConnectionStability.MEDIUM)
+            jitterGrace = 150;
+        else if (stability == ConnectionStability.LOW)
+            jitterGrace = 300;
+
+        return baseWindow + Math.min(1200, pingGrace + jitterGrace);
+    }
+
+    protected int getConnectionBufferRequirement(LACPlayer lacPlayer, int baseBuffer) {
+        int ping = Math.max(lacPlayer.getPing(true), 0);
+        int pingBuffer = ping > 350 ? 3 : ping > 220 ? 2 : ping > 140 ? 1 : 0;
+
+        ConnectionStability stability = getConnectionStabilitySafe(lacPlayer);
+        int jitterBuffer = stability == ConnectionStability.LOW ? 2 : stability == ConnectionStability.MEDIUM ? 1 : 0;
+        int dynamicIncrease = Math.min(5, pingBuffer + jitterBuffer);
+        return baseBuffer + dynamicIncrease;
+    }
+
+
+    protected boolean isHighPingPlayer(LACPlayer lacPlayer) {
+        return Math.max(lacPlayer.getPing(true), 0) >= 220;
+    }
+
+    protected long getPingAwareWindow(LACPlayer lacPlayer, long normalWindow, long highPingWindow) {
+        return isHighPingPlayer(lacPlayer) ? highPingWindow : normalWindow;
+    }
+
+    protected boolean hasRecentMobilityContext(PlayerCache cache, LACPlayer lacPlayer, long time,
+                                               long normalElytraWindow,
+                                               long highPingElytraWindow,
+                                               long normalRiptideWindow,
+                                               long highPingRiptideWindow,
+                                               long normalExplosionWindow,
+                                               long highPingExplosionWindow) {
+        long elytraWindow = getPingAwareWindow(lacPlayer, normalElytraWindow, highPingElytraWindow);
+        long riptideWindow = getPingAwareWindow(lacPlayer, normalRiptideWindow, highPingRiptideWindow);
+        long explosionWindow = getPingAwareWindow(lacPlayer, normalExplosionWindow, highPingExplosionWindow);
+
+        return time - cache.lastElytraEquip <= elytraWindow ||
+                time - cache.lastElytraUnequip <= elytraWindow ||
+                time - cache.lastRiptideDash <= riptideWindow ||
+                time - cache.lastEndCrystalImpact <= explosionWindow ||
+                time - cache.lastWindChargeImpact <= explosionWindow;
+    }
+
+    protected boolean hasInstabilityCooldown(PlayerCache cache, long time, long cooldownWindow) {
+        long climbingTransitionWindow = Math.min(cooldownWindow, 250);
+        long stateChangeWindow = Math.min(cooldownWindow, 400);
+        long gameModeChangeWindow = Math.min(cooldownWindow, 250);
+        return time - cache.lastWindCharge <= cooldownWindow ||
+                time - cache.lastWindChargeReceive <= cooldownWindow ||
+                time - cache.lastWindBurst <= cooldownWindow ||
+                time - cache.lastWindBurstNotVanilla <= cooldownWindow + 400 ||
+                time - cache.lastClimbingTransition <= climbingTransitionWindow ||
+                time - cache.lastTeleport <= cooldownWindow ||
+                time - cache.lastWorldChange <= stateChangeWindow ||
+                time - cache.lastRespawn <= stateChangeWindow ||
+                time - cache.lastGamemodeChange <= gameModeChangeWindow;
+    }
+
     public boolean isPingGlidingPossible(Player player, PlayerCache cache) {
         long currentTime = System.currentTimeMillis();
         if (VerPlayer.getPing(player) > 350 && (currentTime - cache.lastGliding < 2000 || currentTime - cache.lastRiptiding < 3000))
@@ -53,6 +132,36 @@ public abstract class MovementCheck extends Check {
         if (VerPlayer.getPing(player) > 500 && (currentTime - cache.lastGliding < 3000 || currentTime - cache.lastRiptiding < 4000))
             return true;
         return false;
+    }
+
+
+    protected boolean hasRecent121MobilityBoost(PlayerCache cache, long time, boolean strict) {
+        if (strict)
+            return hasRecent121MobilityBoost(cache, time, 1000, 500, 1500, 4000);
+        return hasRecent121MobilityBoost(cache, time, 500, 750, 500, 1000);
+    }
+
+    protected boolean hasRecent121MobilityBoost(PlayerCache cache, long time,
+                                                int windChargeWindow,
+                                                int windChargeReceiveWindow,
+                                                int windBurstWindow,
+                                                int windBurstCustomWindow) {
+        int adjustedWindChargeWindow = windChargeWindow;
+        int adjustedWindChargeReceiveWindow = windChargeReceiveWindow;
+        int adjustedWindBurstWindow = windBurstWindow;
+        int adjustedWindBurstCustomWindow = windBurstCustomWindow;
+
+        if (VerIdentifier.isAtLeastMinecraft(1, 21, 11)) {
+            adjustedWindChargeWindow += 250;
+            adjustedWindChargeReceiveWindow += 250;
+            adjustedWindBurstWindow += 250;
+            adjustedWindBurstCustomWindow += 500;
+        }
+
+        return time - cache.lastWindCharge <= adjustedWindChargeWindow ||
+                time - cache.lastWindChargeReceive <= adjustedWindChargeReceiveWindow ||
+                time - cache.lastWindBurst <= adjustedWindBurstWindow ||
+                time - cache.lastWindBurstNotVanilla <= adjustedWindBurstCustomWindow;
     }
 
     public boolean isLagGlidingPossible(Player player, Buffer buffer, int requiredAccuracy) {

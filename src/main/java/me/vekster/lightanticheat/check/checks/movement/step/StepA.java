@@ -32,6 +32,7 @@ public class StepA extends MovementCheck implements Listener {
                 cache.glidingTicks >= -3 || cache.riptidingTicks >= -3)
             return false;
         long time = System.currentTimeMillis();
+        long instabilityGrace = getDynamicGraceWindow(lacPlayer, 450);
         return time - cache.lastInsideVehicle > 150 && time - cache.lastInWater > 150 &&
                 time - cache.lastKnockback > 750 && time - cache.lastKnockbackNotVanilla > 3000 &&
                 time - cache.lastWasFished > 4000 && time - cache.lastTeleport > 700 &&
@@ -42,7 +43,9 @@ public class StepA extends MovementCheck implements Listener {
                 time - cache.lastWasHit > 350 && time - cache.lastWasDamaged > 150 &&
                 time - cache.lastKbVelocity > 250 && time - cache.lastAirKbVelocity > 500 &&
                 time - cache.lastStrongKbVelocity > 1250 && time - cache.lastStrongAirKbVelocity > 2500 &&
-                time - cache.lastFlight > 750;
+                time - cache.lastFlight > 750 &&
+                !hasRecent121MobilityBoost(cache, time, false) &&
+                !hasInstabilityCooldown(cache, time, instabilityGrace);
     }
 
     @EventHandler
@@ -65,7 +68,7 @@ public class StepA extends MovementCheck implements Listener {
 
         if (getEffectAmplifier(cache, VerUtil.potions.get("LEVITATION")) > 0 ||
                 getEffectAmplifier(cache, VerUtil.potions.get("SLOW_FALLING")) > 1 ||
-                getEffectAmplifier(cache, PotionEffectType.JUMP) > 2)
+                getEffectAmplifier(cache, PotionEffectType.JUMP_BOOST) > 2)
             return;
 
         double vSpeed = distanceVertical(event.getFrom(), event.getTo());

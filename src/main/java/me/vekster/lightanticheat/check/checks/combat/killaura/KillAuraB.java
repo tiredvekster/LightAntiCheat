@@ -31,6 +31,8 @@ public class KillAuraB extends CombatCheck implements Listener {
 
     @EventHandler
     public void onAsyncHit(LACAsyncPlayerAttackEvent event) {
+        if (event.hasDamageCause() && !event.isEntityAttackCause())
+            return;
         LACPlayer lacPlayer = event.getLacPlayer();
         Player player = event.getPlayer();
         Location eyeLocation = player.getEyeLocation().clone();

@@ -57,8 +57,10 @@ public class FoliaScheduler implements GameScheduler {
 
     @Override
     public void entityThread(Player player, boolean force, Runnable task) {
-        if (!force)
+        if (!force) {
             entityThread(player, task);
+            return;
+        }
         FoliaUtil.runTask(player, task);
     }
 

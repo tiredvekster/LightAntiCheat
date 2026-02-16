@@ -61,16 +61,22 @@ public class PlayerCache {
     public Vector vectorOnEntityExplosion;
     public long lastWindCharge;
     public long lastWindChargeReceive;
+    public long lastWindChargeImpact;
+    public long lastEndCrystalImpact;
     public long lastWindBurst;
     public long lastWindBurstNotVanilla;
     public long lastGliding;
     public long lastRiptiding;
+    public long lastRiptideDash;
+    public long lastElytraEquip;
+    public long lastElytraUnequip;
     public long lastFlight;
     public long lastPowderSnowWalk;
     public long lastHitTime;
     public long lastSwingTime;
     public long lastInsideVehicle;
     public long lastInWater;
+    public long lastClimbingTransition;
 
     public int sneakingTicks;
     public int sprintingTicks;
@@ -92,6 +98,8 @@ public class PlayerCache {
     public BlockCache fromBlockCache;
 
     public boolean alerts = true;
+    public boolean hadElytraEquipped;
+    public boolean hadRiptiding;
 
     public static class History {
         public History(Player player) {
